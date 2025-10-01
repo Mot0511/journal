@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import cl from './student.module.sass';
 import type StudentType from '../../types/student';
-import type LectureType from '../../types/lecture';
 import type Cell from '../../types/cell';
 
 const Student = (
