@@ -1,4 +1,3 @@
-import React from 'react'
 import cl from './table_header.module.sass';
 import type GroupType from '../../types/group';
 

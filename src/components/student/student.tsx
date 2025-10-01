@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cl from './student.module.sass';
 import type StudentType from '../../types/student';
 import type LectureType from '../../types/lecture';

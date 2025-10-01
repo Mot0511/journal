@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import cl from './group.module.sass'
 import Student from '../student/student';
 import type GroupType from '../../types/group';

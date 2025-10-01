@@ -1,4 +1,3 @@
-import React from 'react'
 import cl from './table.module.sass';
 import TableHeader from '../table_header/table_header';
 import Group from '../group/group';
