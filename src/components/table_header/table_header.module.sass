@@ -31,12 +31,22 @@
                 align-items: start
                 border: 1px solid #0062E1
                 overflow-x: hidden
-                p
-                    text-overflow: ellipsis
-                    white-space: nowrap
-                    overflow: hidden
+                .lab_header
                     width: 100%
-                    margin: 6px
+                    display: flex
+                    align-items: center
+                    justify-content: space-between
+                    .lab_title
+                        text-overflow: ellipsis
+                        white-space: nowrap
+                        overflow: hidden
+                        width: 85%
+                        margin: 6px
+
+                    .lab_number
+                        width: 15%
+                        
+
                 .lab_tasks
                     margin-left: 1px
                     display: flex
@@ -66,4 +76,9 @@
                 margin-top: 27px
                 transform: rotate(-90deg)
 
-    
+            input
+                width: 55px
+                height: 18px
+                margin-left: -16px
+                margin-top: 20px
+                transform: rotate(-90deg)

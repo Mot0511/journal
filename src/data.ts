@@ -39,15 +39,15 @@ export default [
                 ],
                 labs: [
                     {
-                        id: '1',
-                        title: 'Лабораторная работа 1',
-                        date: '04/09',
+                        id: '6',
+                        number: 1,
+                        date: '04/10',
                         tasks: [true, true, false, true]
                     },
                     {
-                        id: '2',
-                        title: 'Лабораторная работа 2',
-                        date: '04/09',
+                        id: '7',
+                        number: 2,
+                        date: '04/10',
                         tasks: [true, true, false, true, true]
                     }
                 ],

@@ -1,6 +1,6 @@
 export default interface LabType {
     id: string
-    title: string
+    number: number
     date: string
     tasks: boolean[]
 }

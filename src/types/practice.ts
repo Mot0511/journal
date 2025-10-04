@@ -1,4 +1,4 @@
-export default interface PracticType {
+export default interface PracticeType {
     id: string
     date: string
     value: string

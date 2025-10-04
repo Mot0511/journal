@@ -39,7 +39,7 @@ const Student = (
                                     setSelectedCellValue(lecture.presence ? '' : 'Н')
                                     setSelectedCell(
                                         {
-                                            id: String(Date.now()),
+                                            id: lecture.id,
                                             studentID: student.id,
                                             lessonID: lecture.id,
                                             lessonType: 'lecture'
@@ -79,7 +79,7 @@ const Student = (
                             setSelectedCellValue(practice.value)
                             setSelectedCell(
                                 {
-                                    id: String(Date.now()),
+                                    id: practice.id,
                                     studentID: student.id,
                                     lessonID: practice.id,
                                     lessonType: 'practice'

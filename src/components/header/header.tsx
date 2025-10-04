@@ -9,6 +9,10 @@ import TableIcon from '../../img/table.png'
 import StudentIcon from '../../img/student.png'
 import StudentModal from '../student_modal/student_modal';
 import type GroupType from '../../types/group';
+import ColumnsModal from '../columns_modal/columns_modal';
+import type LectureType from '../../types/lecture';
+import type PracticeType from '../../types/practice';
+import type LabType from '../../types/lab';
 
 const Header = (
     {   
@@ -17,7 +21,10 @@ const Header = (
         subject, 
         onSubjectEdit,
         groups,
-        onAddStudent
+        onAddStudent,
+        onRemoveStudent,
+        onAddColumns,
+        onRemoveColumns
     }: {
         teacher: string, 
         onTeacherEdit: (teacher: string) => void,
@@ -25,11 +32,16 @@ const Header = (
         onSubjectEdit: (subject: string) => void,
         groups: GroupType[],
         onAddStudent: (name: string, groupID: string) => void
+        onRemoveStudent: () => void,
+        onAddColumns: (columns: any, lessonType: string, count: number) => void,
+        onRemoveColumns: () => void
     }) => {
 
     const [isInfoEditing, setInfoEditing] = useState<boolean>();
     const [isContextStudentsVisible, setIsContextStudentsVisible] = useState<boolean>();
+    const [isContextColumnsVisible, setIsContextColumnsVisible] = useState<boolean>();
     const [isStudentModalVisible, setIsStudentModalVisible] = useState<boolean>(false)
+    const [isColumnsModalVisible, setIsColumnsModalVisible] = useState<boolean>(false)
 
     return (
         <div className={cl.header}>
@@ -42,6 +54,16 @@ const Header = (
                             setIsStudentModalVisible(false)
                         }} 
                         onCancel={() => setIsStudentModalVisible(false)}
+                    />
+            }
+            {
+                isColumnsModalVisible &&
+                    <ColumnsModal
+                        onAddColumns={(column, lessonType, count) => {
+                            onAddColumns(column, lessonType, count)
+                            setIsColumnsModalVisible(false)
+                        }} 
+                        onCancel={() => setIsColumnsModalVisible(false)}
                     />
             }
             <div className={cl.info}>
@@ -73,9 +95,20 @@ const Header = (
                     <img src={FilterIcon} alt="" /><br />
                     Фильтр
                 </button>
-                <button>
+                <button onClick={() => setIsContextColumnsVisible(!isContextColumnsVisible)}>
                     <img src={TableIcon} alt="" /><br />
                     Столбцы
+                    {
+                        isContextColumnsVisible &&
+                        <div className={cl.context_menu}>
+                            <div onClick={() => setIsColumnsModalVisible(true)}>
+                                + Добавить
+                            </div>
+                            <div style={{borderRadius: '0 0 10px 10px'}} onClick={onRemoveColumns}>
+                                - Удалить
+                            </div>
+                        </div>
+                    }
                 </button>
                 <button onClick={() => setIsContextStudentsVisible(!isContextStudentsVisible)}>
                     <img src={StudentIcon} alt="" /><br />
@@ -86,7 +119,7 @@ const Header = (
                             <div onClick={() => setIsStudentModalVisible(true)}>
                                 + Добавить
                             </div>
-                            <div style={{borderRadius: '0 0 10px 10px'}}>
+                            <div style={{borderRadius: '0 0 10px 10px'}} onClick={onRemoveStudent}>
                                 - Удалить
                             </div>
                         </div>
