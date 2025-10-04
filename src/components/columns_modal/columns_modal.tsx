@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import cl from './columns_modal.module.sass'
-import type LabType from '../../types/lab'
 
 const ColumnsModal = (
     {

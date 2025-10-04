@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import './globals.css';
 import Header from './components/header/header';
 import Table from './components/table/table';
 import type GroupType from './types/group';
 import Data from './data'
-import type LectureType from './types/lecture';
-import type PracticeType from './types/practice';
-import type LabType from './types/lab';
 
 const Home = () => {
 

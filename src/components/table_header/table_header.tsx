@@ -1,7 +1,6 @@
 import cl from './table_header.module.sass';
 import type GroupType from '../../types/group';
 import { useState } from 'react';
-import { IoMdSettings } from "react-icons/io";
 import { IoSettingsOutline } from 'react-icons/io5';
 import TasksModal from '../tasks_modal/tasks_modal';
 import type LabType from '../../types/lab';

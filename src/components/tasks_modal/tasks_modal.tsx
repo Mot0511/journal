@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import cl from './tasks_modal.module.sass'
-import type LabType from '../../types/lab'
 
 const TasksModal = (
     {

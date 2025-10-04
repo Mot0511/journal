@@ -10,9 +10,6 @@ import StudentIcon from '../../img/student.png'
 import StudentModal from '../student_modal/student_modal';
 import type GroupType from '../../types/group';
 import ColumnsModal from '../columns_modal/columns_modal';
-import type LectureType from '../../types/lecture';
-import type PracticeType from '../../types/practice';
-import type LabType from '../../types/lab';
 
 const Header = (
     {   
