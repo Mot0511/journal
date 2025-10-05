@@ -122,10 +122,11 @@ const Student = (
                                         return <div className={cl.mark}>
                                             <input 
                                                 type="checkbox" 
-                                                className={cl.checkbox + ' ' + cl.pink_checkbox}
+                                                className={'checkbox'}
                                                 id={String(count)}
-                                                checked={task} 
+                                                checked={task}
                                                 onChange={(e) => onCheckLabTask(student.groupID, student.id, lab.id, Number(e.target.id))}
+                                                style={{accentColor: '#B52F2F'}}
                                             />
                                         </div>
                                     }

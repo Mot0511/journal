@@ -3,13 +3,15 @@ import './globals.css';
 import Header from './components/header/header';
 import Table from './components/table/table';
 import type GroupType from './types/group';
-import Data from './data'
+import type ScoresType from './types/scores';
+import {groups_data, scores_data} from './data'
 
 const Home = () => {
 
     const [teacher, setTeacher] = useState<string>('ФИО преподавателя');
     const [subject, setSubject] = useState<string>('Предмет');
-    const [groups, setGroups] = useState<GroupType[]>(Data)
+    const [groups, setGroups] = useState<GroupType[]>(groups_data)
+    const [scores, setScores] = useState<ScoresType[]>(scores_data)
 
     const [selectedStudents, setSelectedStudents] = useState<string[]>([])
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
@@ -210,6 +212,8 @@ const Home = () => {
                     selectedColumns={selectedColumns}
                     setSelectedColumns={setSelectedColumns}
                     editLabTasks={editLabTasks}
+                    scores={scores}
+                    setScores={setScores}
                 />
             </main>
         </>

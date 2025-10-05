@@ -8,8 +8,17 @@
         display: flex
         justify-content: center
         align-items: center
-        h3
-            padding: 10px 20px
+        .lectures_header, .practices_header, .labs_header
+            display: flex
+            align-items: center
+            justify-content: center
+            h3
+                margin-left: 10px
+                margin-top: 10px
+                margin-right: 5px
+                margin-bottom: 10px
+            .scoresBtn
+                margin-top: 5px
 
     .lessons_header_box
         height: 105px
@@ -22,8 +31,9 @@
     .labs_header_box
         flex-direction: column
         .labs
+            width: 100%
             margin-top: 5px
-            align-items: start
+            justify-content: start
             display: flex
             .lab
                 display: flex
@@ -82,3 +92,5 @@
                 margin-left: -16px
                 margin-top: 20px
                 transform: rotate(-90deg)
+
+    

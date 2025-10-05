@@ -4,21 +4,27 @@ import { useState } from 'react';
 import { IoSettingsOutline } from 'react-icons/io5';
 import TasksModal from '../tasks_modal/tasks_modal';
 import type LabType from '../../types/lab';
+import ScoresModal from '../scores_modal/scores_modal';
+import type ScoreType from '../../types/scores';
 
 const TableHeader = (
         {
-            group,
+            groups,
             editDate,
             selectedColumns,
             setSelectedColumns,
-            editLabTasks
+            editLabTasks,
+            scores,
+            setScores
         }: 
         {
-            group: GroupType
+            groups: GroupType[]
             editDate: (lessonID: string, lessonType: string, date: string) => void
             selectedColumns: string[],
             setSelectedColumns: (columns: string[]) => void
-            editLabTasks: (labID: string, tasksCount: number) => void
+            editLabTasks: (labID: string, tasksCount: number) => void,
+            scores: ScoreType[],
+            setScores: (scores: ScoreType[]) => void,
         }
     ) => {
 
@@ -26,6 +32,7 @@ const TableHeader = (
     const [editingLessonValue, setEditingLessonValue] = useState<string>('')
 
     const [editingLab, setEditingLab] = useState<LabType | null>()
+    const [isEditingScores, setIsEditingScores] = useState<boolean>(false)
     
     return (
         <div className={cl.table_header}>
@@ -42,14 +49,28 @@ const TableHeader = (
                         tasksCount={editingLab.tasks.length}
                     />
             }
+            {
+                isEditingScores &&
+                    <ScoresModal
+                        scoresData={scores}
+                        setScoresData={(scores: ScoreType[]) => {
+                            setScores(scores)
+                            setIsEditingScores(false)
+                        }}
+                        onCancel={() => setIsEditingScores(false)}
+                    />
+            }
             <div className={cl.student_name_box + ' ' + cl.table_header_box}>
                 <h3>ФИО</h3>
             </div>
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
-                <h3>Лекции</h3>
+                <div className={cl.lectures_header}>
+                    <h3>Лекции</h3>
+                    <button className={cl.scoresBtn} onClick={() => setIsEditingScores(!isEditingScores)}><IoSettingsOutline /></button>
+                </div>
                 <div className={cl.days}>
                     {
-                        group.students[0].lectures.map(lecture => {
+                        groups[0].students[0].lectures.map(lecture => {
                             return <div 
                                 className={cl.day} 
                                 style={{backgroundColor: selectedColumns.includes(lecture.id) ? '#F0F3F9' : 'white'}} 
@@ -90,10 +111,13 @@ const TableHeader = (
                 </div>
             </div>
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
-                <h3>Практика</h3>
+                <div className={cl.practices_header}>
+                    <h3>Практика</h3>
+                    <button className={cl.scoresBtn} onClick={() => setIsEditingScores(!isEditingScores)}><IoSettingsOutline /></button>
+                </div>
                 <div className={cl.days}>
                     {
-                        group.students[0].practices.map(practice => 
+                        groups[0].students[0].practices.map(practice => 
                             <div 
                                 className={cl.day}
                                 style={{backgroundColor: selectedColumns.includes(practice.id) ? '#F0F3F9' : 'white'}} 
@@ -131,10 +155,13 @@ const TableHeader = (
                 </div>
             </div>
             <div className={cl.table_header_box + ' ' + cl.labs_header_box}>
-                <h3>Лабораторные работы</h3>
+                <div className={cl.labs_header}>
+                    <h3>Лабораторные работы</h3>
+                    <button className={cl.scoresBtn} onClick={() => setIsEditingScores(!isEditingScores)}><IoSettingsOutline /></button>
+                </div>
                 <div className={cl.labs}>
                     {
-                        group.students[0].labs.map(lab => {
+                        groups[0].students[0].labs.map(lab => {
                             let num = 0
                             return <div 
                                 className={cl.lab} 

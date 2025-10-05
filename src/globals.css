@@ -42,3 +42,27 @@ body {
     border: 1px solid black;
     font-size: 15px;
 }
+
+select {
+    width: 520px;
+    height: 50px;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+    padding: 0 1em 0 0;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: inherit;
+    line-height: inherit;
+    border-radius: 30px;
+    border: 1px solid #0062E1;
+    font-size: 20px;
+    padding-left: 20px;
+    color: #818496;
+}
+    
+.checkbox {
+    transform: scale(1.3)
+}
+    

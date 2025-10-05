@@ -1,4 +1,7 @@
-export default [
+import type GroupType from "./types/group"
+import type ScoreType from "./types/scores"
+
+const groups_data: GroupType[] = [
     {
         id: '100',
         title: 'ИВТб-1301-05-00',
@@ -59,3 +62,32 @@ export default [
         ]
     },
 ]
+
+const scores_data: ScoreType[] = [
+    {
+        id: 1,
+        type: 'number',
+        value: '2',
+        score: -1
+    },
+    {
+        id: 2,
+        type: 'checkbox',
+        value: '1',
+        score: 1
+    },
+    {
+        id: 3,
+        type: 'checkbox',
+        value: '2',
+        score: 1
+    },
+    {
+        id: 4,
+        type: 'symbol',
+        value: 'Н',
+        score: -1
+    },
+]
+
+export {groups_data, scores_data}
