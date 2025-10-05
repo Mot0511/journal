@@ -8,6 +8,8 @@
         display: flex
         justify-content: center
         align-items: center
+        h3
+            margin: 0 25px
         .lectures_header, .practices_header, .labs_header
             display: flex
             align-items: center
@@ -27,6 +29,40 @@
 
     .student_name_box
         width: 400px
+        display: block
+        div
+            div
+                width: 320px
+                display: flex
+                justify-content: center
+                align-items: center
+
+            button
+                width: 80px
+                height: 110px
+                border-radius: 0 10px 0 0
+                font-size: 40px
+
+        .filters
+            position: relative
+            width: 400px
+            height: 240px
+            overflow-y: scroll
+            background-color: white
+            border-radius: 0 0 10px 10px
+            border: 1px solid 
+            margin-top: 10px
+            .student
+                padding: 5px 0
+                width: 100%
+                height: 30px
+                display: flex
+                justify-content: start
+                align-items: center
+                border-bottom: 1px solid #0062E1
+                input
+                    margin: 0 10px
+
 
     .labs_header_box
         flex-direction: column

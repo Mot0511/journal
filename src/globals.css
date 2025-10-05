@@ -9,8 +9,18 @@
     color: #0062E1;
 }
 
+body {
+    background-color: #FBFBFF;
+    height: 100vh
+}
+
+#root {
+    height: 100%;
+}
+
 main {
     width: 100%;
+    height: 100%;
     overflow-x: scroll
 }
 
@@ -28,9 +38,7 @@ button:hover {
     background-color: #F0F3F9;
 }
 
-body {
-    background-color: #FBFBFF
-}
+
 
 .input {
     width: 200px;

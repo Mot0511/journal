@@ -15,6 +15,7 @@ const Home = () => {
 
     const [selectedStudents, setSelectedStudents] = useState<string[]>([])
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
+    const [hiddenStudents, setHiddenStudents] = useState<string[]>([])
 
     const onAddStudent = (name: string, groupID: string) => {
         setGroups(groups.map(group => {
@@ -214,6 +215,8 @@ const Home = () => {
                     editLabTasks={editLabTasks}
                     scores={scores}
                     setScores={setScores}
+                    hiddenStudents={hiddenStudents}
+                    setHiddenStudents={setHiddenStudents}
                 />
             </main>
         </>

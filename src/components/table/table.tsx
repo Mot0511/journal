@@ -15,7 +15,9 @@ const Table = (
         setSelectedColumns,
         editLabTasks,
         scores,
-        setScores
+        setScores,
+        hiddenStudents,
+        setHiddenStudents,
     }: {
         groups: GroupType[],
         onStudentSelected: (studentID: string, isSelected: boolean) => void
@@ -27,6 +29,8 @@ const Table = (
         editLabTasks: (labID: string, tasksCount: number) => void,
         scores: ScoreType[],
         setScores: (scores: ScoreType[]) => void,
+        hiddenStudents: string[],
+        setHiddenStudents: (students: string[]) => void
     }) => {
 
     return (
@@ -39,6 +43,8 @@ const Table = (
                 editLabTasks={editLabTasks}
                 scores={scores}
                 setScores={setScores}
+                hiddenStudents={hiddenStudents}
+                setHiddenStudents={setHiddenStudents}
             />
             {
                 groups.map(group => <Group 
@@ -46,7 +52,7 @@ const Table = (
                     onStudentSelected={onStudentSelected}
                     onCheckLabTask={onCheckLabTask}
                     onSetCellValue={onSetCellValue}
-                    
+                    hiddenStudents={hiddenStudents}
                 />)
             }
             

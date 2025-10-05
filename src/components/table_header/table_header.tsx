@@ -6,6 +6,9 @@ import TasksModal from '../tasks_modal/tasks_modal';
 import type LabType from '../../types/lab';
 import ScoresModal from '../scores_modal/scores_modal';
 import type ScoreType from '../../types/scores';
+import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
+import type StudentType from '../../types/student';
+import { DiVim } from 'react-icons/di';
 
 const TableHeader = (
         {
@@ -15,7 +18,9 @@ const TableHeader = (
             setSelectedColumns,
             editLabTasks,
             scores,
-            setScores
+            setScores,
+            hiddenStudents,
+            setHiddenStudents
         }: 
         {
             groups: GroupType[]
@@ -25,6 +30,8 @@ const TableHeader = (
             editLabTasks: (labID: string, tasksCount: number) => void,
             scores: ScoreType[],
             setScores: (scores: ScoreType[]) => void,
+            hiddenStudents: string[],
+            setHiddenStudents: (students: string[]) => void
         }
     ) => {
 
@@ -33,7 +40,17 @@ const TableHeader = (
 
     const [editingLab, setEditingLab] = useState<LabType | null>()
     const [isEditingScores, setIsEditingScores] = useState<boolean>(false)
-    
+    const [isFiltersCollapsed, setIsFiltersCollapsed] = useState<boolean>(true)
+    const [isHideEverybody, setIsHideEverybody] = useState<boolean>(false)
+
+    const getStudents = (): StudentType[] => {
+        const students: StudentType[] = []
+        groups.forEach(group => {
+            group.students.forEach(student => students.push(student))
+        })
+        return students
+    }
+
     return (
         <div className={cl.table_header}>
             {
@@ -61,7 +78,50 @@ const TableHeader = (
                     />
             }
             <div className={cl.student_name_box + ' ' + cl.table_header_box}>
-                <h3>ФИО</h3>
+                <div style={{display: 'flex'}}>
+                    <div>
+                        <h3>ФИО</h3>
+                    </div>
+                    <button onClick={_ => setIsFiltersCollapsed(!isFiltersCollapsed)}>
+                        {   
+                            isFiltersCollapsed 
+                                ? <MdArrowDropDown /> 
+                                : <MdArrowDropUp />
+                        }
+                    </button>
+                </div>
+                {
+                    !isFiltersCollapsed &&
+                        <div className={cl.filters}>
+                            <div className={cl.student}>
+                                <input type="checkbox" checked={!isHideEverybody} onClick={() => {
+                                   if (isHideEverybody) {
+                                        setHiddenStudents([])
+                                        setIsHideEverybody(false)
+                                   } else {
+                                        setHiddenStudents(getStudents().map(student => student.id))
+                                        setIsHideEverybody(true)
+                                   }
+
+                                }} />
+                                <p>Выделить все</p>
+                            </div>
+                            {
+                                getStudents().map(student => 
+                                    <div className={cl.student}>
+                                        <input type="checkbox" checked={!hiddenStudents.includes(student.id)} onClick={() => {
+                                            if (hiddenStudents.includes(student.id)) {
+                                                setHiddenStudents(hiddenStudents.filter(studentID => studentID != student.id))
+                                            } else {
+                                                setHiddenStudents([...hiddenStudents, student.id])
+                                            }
+                                        }} />
+                                        <p><label>{student.name}</label></p>
+                                    </div>
+                                )
+                            }
+                        </div>
+                }
             </div>
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
                 <div className={cl.lectures_header}>
