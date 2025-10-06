@@ -8,7 +8,6 @@ import ScoresModal from '../scores_modal/scores_modal';
 import type ScoreType from '../../types/scores';
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import type StudentType from '../../types/student';
-import { DiVim } from 'react-icons/di';
 
 const TableHeader = (
         {

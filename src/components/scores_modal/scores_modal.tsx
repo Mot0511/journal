@@ -3,7 +3,6 @@ import cl from './scores_modal.module.sass'
 import type ScoreType from '../../types/scores'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import CheckboxColors from '../../consts/checkbox_colors.ts'
-import checkboxColors from '../../consts/checkbox_colors.ts';
 
 const ScoresModal = (
     {

@@ -106,7 +106,7 @@ const Header = (
                             <div onClick={sortByAscending}>
                                 По возрастанию
                             </div>
-                            <div onClick={sortByDescending} style={{borderRadius: '0 0 10px 10px'}} onClick={onRemoveColumns}>
+                            <div onClick={sortByDescending} style={{borderRadius: '0 0 10px 10px'}}>
                                 По убыванию
                             </div>
                         </div>
