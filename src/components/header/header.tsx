@@ -21,7 +21,11 @@ const Header = (
         onAddStudent,
         onRemoveStudent,
         onAddColumns,
-        onRemoveColumns
+        onRemoveColumns,
+        isFiltersCollapsed,
+        setIsFiltersCollapsed,
+        sortByAscending,
+        sortByDescending,
     }: {
         teacher: string, 
         onTeacherEdit: (teacher: string) => void,
@@ -32,6 +36,10 @@ const Header = (
         onRemoveStudent: () => void,
         onAddColumns: (columns: any, lessonType: string, count: number) => void,
         onRemoveColumns: () => void
+        isFiltersCollapsed: boolean,
+        setIsFiltersCollapsed: (state: boolean) => void,
+        sortByAscending: () => void
+        sortByDescending: () => void
     }) => {
 
     const [isInfoEditing, setInfoEditing] = useState<boolean>();
@@ -39,6 +47,7 @@ const Header = (
     const [isContextColumnsVisible, setIsContextColumnsVisible] = useState<boolean>();
     const [isStudentModalVisible, setIsStudentModalVisible] = useState<boolean>(false)
     const [isColumnsModalVisible, setIsColumnsModalVisible] = useState<boolean>(false)
+    const [isContextSortVisible, setIsContextSortVisible] = useState<boolean>(false)
 
     return (
         <div className={cl.header}>
@@ -84,15 +93,34 @@ const Header = (
             </div>
             <input type="search" className={cl.search} placeholder='Поиск' />
             <div className={cl.menu}>
-                <button>
+                <button onClick={() => {
+                    setIsContextSortVisible(!isContextSortVisible)
+                    setIsContextColumnsVisible(false)
+                    setIsContextStudentsVisible(false)
+                }}>
                     <img src={SortIcon} alt="" /><br />
                     Сортировка
+                    {
+                        isContextSortVisible &&
+                        <div className={cl.context_menu}>
+                            <div onClick={sortByAscending}>
+                                По возрастанию
+                            </div>
+                            <div onClick={sortByDescending} style={{borderRadius: '0 0 10px 10px'}} onClick={onRemoveColumns}>
+                                По убыванию
+                            </div>
+                        </div>
+                    }
                 </button>
-                <button>
+                <button onClick={() => setIsFiltersCollapsed(!isFiltersCollapsed)}>
                     <img src={FilterIcon} alt="" /><br />
                     Фильтр
                 </button>
-                <button onClick={() => setIsContextColumnsVisible(!isContextColumnsVisible)}>
+                <button onClick={() => {
+                    setIsContextColumnsVisible(!isContextColumnsVisible)
+                    setIsContextSortVisible(false)
+                    setIsContextStudentsVisible(false)
+                }}>
                     <img src={TableIcon} alt="" /><br />
                     Столбцы
                     {
@@ -107,7 +135,11 @@ const Header = (
                         </div>
                     }
                 </button>
-                <button onClick={() => setIsContextStudentsVisible(!isContextStudentsVisible)}>
+                <button onClick={() => {
+                    setIsContextStudentsVisible(!isContextStudentsVisible)
+                    setIsContextSortVisible(false)
+                    setIsContextColumnsVisible(false)
+                }}>
                     <img src={StudentIcon} alt="" /><br />
                     Студенты
                     {

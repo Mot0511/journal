@@ -5,6 +5,7 @@ import Table from './components/table/table';
 import type GroupType from './types/group';
 import type ScoresType from './types/scores';
 import {groups_data, scores_data} from './data'
+import alphabet from './consts/alphabet';
 
 const Home = () => {
 
@@ -16,6 +17,7 @@ const Home = () => {
     const [selectedStudents, setSelectedStudents] = useState<string[]>([])
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
     const [hiddenStudents, setHiddenStudents] = useState<string[]>([])
+    const [isFiltersCollapsed, setIsFiltersCollapsed] = useState<boolean>(true)
 
     const onAddStudent = (name: string, groupID: string) => {
         setGroups(groups.map(group => {
@@ -190,6 +192,26 @@ const Home = () => {
         }))
     }
 
+    const sortByAscending = () => {
+        setGroups(groups.map(group => {
+            console.log(group)
+            group.students.sort((s1, s2) => {
+                return alphabet.indexOf(s1.name[0].toLowerCase()) - alphabet.indexOf(s2.name[0].toLowerCase())
+            })
+            return group
+        }))
+    }
+
+    const sortByDescending = () => {
+        setGroups(groups.map(group => {
+            console.log(group)
+            group.students.sort((s1, s2) => {
+                return alphabet.indexOf(s2.name[0].toLowerCase()) - alphabet.indexOf(s1.name[0].toLowerCase())
+            })
+            return group
+        }))
+    }
+
     return (
         <>
             <Header 
@@ -202,6 +224,10 @@ const Home = () => {
                 onRemoveStudent={onRemoveStudent}
                 onAddColumns={onAddColumns}
                 onRemoveColumns={onRemoveColumns}
+                isFiltersCollapsed={isFiltersCollapsed}
+                setIsFiltersCollapsed={setIsFiltersCollapsed}
+                sortByAscending={sortByAscending}
+                sortByDescending={sortByDescending}
             />
             <main>
                 <Table 
@@ -217,6 +243,8 @@ const Home = () => {
                     setScores={setScores}
                     hiddenStudents={hiddenStudents}
                     setHiddenStudents={setHiddenStudents}
+                    isFiltersCollapsed={isFiltersCollapsed}
+                    setIsFiltersCollapsed={setIsFiltersCollapsed}
                 />
             </main>
         </>

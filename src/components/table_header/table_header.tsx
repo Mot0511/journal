@@ -20,7 +20,9 @@ const TableHeader = (
             scores,
             setScores,
             hiddenStudents,
-            setHiddenStudents
+            setHiddenStudents,
+            isFiltersCollapsed,
+            setIsFiltersCollapsed
         }: 
         {
             groups: GroupType[]
@@ -32,6 +34,8 @@ const TableHeader = (
             setScores: (scores: ScoreType[]) => void,
             hiddenStudents: string[],
             setHiddenStudents: (students: string[]) => void
+            isFiltersCollapsed: boolean,
+            setIsFiltersCollapsed: (state: boolean) => void
         }
     ) => {
 
@@ -40,7 +44,6 @@ const TableHeader = (
 
     const [editingLab, setEditingLab] = useState<LabType | null>()
     const [isEditingScores, setIsEditingScores] = useState<boolean>(false)
-    const [isFiltersCollapsed, setIsFiltersCollapsed] = useState<boolean>(true)
     const [isHideEverybody, setIsHideEverybody] = useState<boolean>(false)
 
     const getStudents = (): StudentType[] => {

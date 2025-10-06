@@ -18,6 +18,8 @@ const Table = (
         setScores,
         hiddenStudents,
         setHiddenStudents,
+        isFiltersCollapsed,
+        setIsFiltersCollapsed
     }: {
         groups: GroupType[],
         onStudentSelected: (studentID: string, isSelected: boolean) => void
@@ -31,6 +33,8 @@ const Table = (
         setScores: (scores: ScoreType[]) => void,
         hiddenStudents: string[],
         setHiddenStudents: (students: string[]) => void
+        isFiltersCollapsed: boolean,
+        setIsFiltersCollapsed: (state: boolean) => void
     }) => {
 
     return (
@@ -45,6 +49,8 @@ const Table = (
                 setScores={setScores}
                 hiddenStudents={hiddenStudents}
                 setHiddenStudents={setHiddenStudents}
+                isFiltersCollapsed={isFiltersCollapsed}
+                setIsFiltersCollapsed={setIsFiltersCollapsed}
             />
             {
                 groups.map(group => <Group 
