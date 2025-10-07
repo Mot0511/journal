@@ -195,7 +195,6 @@ const Home = () => {
 
     const sortByAscending = () => {
         setGroups(groups.map(group => {
-            console.log(group)
             group.students.sort((s1, s2) => {
                 return alphabet.indexOf(s1.name[0].toLowerCase()) - alphabet.indexOf(s2.name[0].toLowerCase())
             })
