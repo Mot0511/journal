@@ -24,9 +24,9 @@ const ScoresModal = (
 
     const [scores, setScores] = useState<ScoreType[]>(scoresData)
 
-    const isExistingScoreWithSameValue = (value: string) => {
+    const isExistingScoreWithSameValue = (value: string, valueType: string) => {
         for (let score of scores) {
-            if (score.value == value) {
+            if (score.value == value && score.type == valueType) {
                 return true
             }
         }
@@ -42,15 +42,15 @@ const ScoresModal = (
         }
         switch (valueType) {
             case 'checkbox':
-                if (isExistingScoreWithSameValue('0')) return
+                if (isExistingScoreWithSameValue('0', 'checkbox')) return
                 data.value = '0'
                 break
             case 'symbol':
-                if (isExistingScoreWithSameValue('Н')) return
+                if (isExistingScoreWithSameValue('Н', 'symbol')) return
                 data.value = 'Н'
                 break
             case 'number':
-                if (isExistingScoreWithSameValue('2')) return
+                if (isExistingScoreWithSameValue('2', 'number')) return
                 data.value = '2'
                 break
         }
@@ -62,8 +62,8 @@ const ScoresModal = (
         setScores(scores.filter(score => score.id != id))
     }
 
-    const editValue = (id: number) => {
-        if (isExistingScoreWithSameValue(value)) return
+    const editValue = (id: number, valueType: string) => {
+        if (isExistingScoreWithSameValue(value, valueType)) return
         setScores(scores.map(score => {
             if (score.id == id) {
                 score.value = value
@@ -124,7 +124,7 @@ const ScoresModal = (
                                                     value={value}
                                                     onChange={e => setValue(e.target.value)}
                                                     onBlur={_ => {
-                                                        editValue(score.id)
+                                                        editValue(score.id, score.type)
                                                         setEditingScore(null)
                                                     }}
                                                 />

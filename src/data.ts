@@ -257,7 +257,7 @@ const groups_data: GroupType[] = [
 
 const scores_data: ScoreType[] = [
     {
-        id: 1,
+        id: 6,
         type: 'number',
         value: '1',
         score: 1
