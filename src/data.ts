@@ -45,13 +45,22 @@ const groups_data: GroupType[] = [
                         id: '6',
                         number: 1,
                         date: '04/10',
-                        tasks: [true, true, false, true]
+                        tasks: [true, true, false, true],
+                        checkboxColor: 0
                     },
                     {
                         id: '7',
                         number: 2,
                         date: '04/10',
-                        tasks: [true, true, false, true, true]
+                        tasks: [true, true, false, true, true],
+                        checkboxColor: 1
+                    },
+                    {
+                        id: '8',
+                        number: 3,
+                        date: '04/10',
+                        tasks: [true, true, false, true, true],
+                        checkboxColor: 2
                     }
                 ],
                 lecture_presences: 10,
@@ -67,23 +76,35 @@ const scores_data: ScoreType[] = [
     {
         id: 1,
         type: 'number',
-        value: '2',
-        score: -1
-    },
-    {
-        id: 2,
-        type: 'checkbox',
         value: '1',
         score: 1
     },
     {
+        id: 1,
+        type: 'number',
+        value: '5',
+        score: 5
+    },
+    {
+        id: 2,
+        type: 'checkbox',
+        value: '0',
+        score: 10
+    },
+    {
         id: 3,
         type: 'checkbox',
-        value: '2',
-        score: 1
+        value: '1',
+        score: 20
     },
     {
         id: 4,
+        type: 'checkbox',
+        value: '2',
+        score: 30
+    },
+    {
+        id: 5,
         type: 'symbol',
         value: 'Н',
         score: -1

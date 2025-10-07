@@ -28,7 +28,7 @@ const TableHeader = (
             editDate: (lessonID: string, lessonType: string, date: string) => void
             selectedColumns: string[],
             setSelectedColumns: (columns: string[]) => void
-            editLabTasks: (labID: string, tasksCount: number) => void,
+            editLabTasks: (labID: string, tasksCount: number, checkboxColors: number) => void,
             scores: ScoreType[],
             setScores: (scores: ScoreType[]) => void,
             hiddenStudents: string[],
@@ -58,14 +58,15 @@ const TableHeader = (
             {
                 editingLab &&
                     <TasksModal
-                        onEditTasks={(tasksCount: number) => {
-                            editLabTasks(editingLab.id, tasksCount)
+                        onEditTasks={(tasksCount: number, checkboxColors: number) => {
+                            editLabTasks(editingLab.id, tasksCount, checkboxColors)
                             setEditingLab(null)
                         }}
                         onCancel={() => {
                             setEditingLab(null)
                         }}
                         tasksCount={editingLab.tasks.length}
+                        checkboxColor_data={editingLab.checkboxColor}
                     />
             }
             {

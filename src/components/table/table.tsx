@@ -28,7 +28,7 @@ const Table = (
         editDate: (lessonID: string, lessonType: string, date: string) => void,
         selectedColumns: string[],
         setSelectedColumns: (columns: string[]) => void,
-        editLabTasks: (labID: string, tasksCount: number) => void,
+        editLabTasks: (labID: string, tasksCount: number, checkboxColors: number) => void,
         scores: ScoreType[],
         setScores: (scores: ScoreType[]) => void,
         hiddenStudents: string[],
@@ -59,6 +59,7 @@ const Table = (
                     onCheckLabTask={onCheckLabTask}
                     onSetCellValue={onSetCellValue}
                     hiddenStudents={hiddenStudents}
+                    scores={scores}
                 />)
             }
             

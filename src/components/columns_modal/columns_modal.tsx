@@ -37,6 +37,7 @@ const ColumnsModal = (
                     break
                 case 'lab':
                     lesson.tasks = [false, false, false]
+                    lesson.checkboxColor = '0'
                     columns.push(lesson)
             }
         }

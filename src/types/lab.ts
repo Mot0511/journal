@@ -3,4 +3,5 @@ export default interface LabType {
     number: number
     date: string
     tasks: boolean[]
+    checkboxColor: number
 }

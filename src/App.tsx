@@ -33,7 +33,7 @@ const Home = () => {
                         return {id: practice.id, date: practice.date, value: ''}
                     }),
                     labs: group.students[0].labs.map(lab => {
-                        return {id: lab.id, number: lab.number, date: lab.date, tasks: lab.tasks.map(_ => false)}
+                        return {id: lab.id, number: lab.number, date: lab.date, checkboxColor: lab.checkboxColor, tasks: lab.tasks.map(_ => false)}
                     }),
                     lecture_presences: 0,
                     practice_presences: 0,
@@ -166,11 +166,12 @@ const Home = () => {
         }))
     }
 
-    const editLabTasks = (labID: string, tasksCount: number) => {
+    const editLabTasks = (labID: string, tasksCount: number, checkboxColor: number) => {
         setGroups(groups.map(group => {
             group.students.forEach(student => {
                 for (let lab of student.labs) {
                     if (lab.id == labID) {
+                        lab.checkboxColor = checkboxColor
                         if (tasksCount > lab.tasks.length) {
                             const newTasks = []
                             for (let i = 0; i < tasksCount - lab.tasks.length; i++) {

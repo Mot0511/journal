@@ -1,24 +1,122 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import cl from './student.module.sass';
 import type StudentType from '../../types/student';
 import type Cell from '../../types/cell';
+import checkboxColors from '../../consts/checkbox_colors';
+import type ScoreType from '../../types/scores';
 
 const Student = (
     {
         student,
         onSelected,
         onSetCellValue,
-        onCheckLabTask
+        onCheckLabTask,
+        scores
     }: {
         student: StudentType
         onSelected: (studentID: string, isSelected: boolean) => void
         onSetCellValue: (groupID: string, studentID: string, lessonID: string, lessonType: string, value: string) => void
         onCheckLabTask: (groupID: string, studentID: string, labID: string, taskID: number) => void
+        scores: ScoreType[]
     }) => {
 
     const [isSelected, setIsSelected] = useState<boolean>(false)
     const [selectedCell, setSelectedCell] = useState<Cell | null>()
     const [selectedCellValue, setSelectedCellValue] = useState<string>('')
+    
+    const [lecturePresneces, setLecturePresences] = useState<number>(0)
+    const [practicePresneces, setPracticePresences] = useState<number>(0)
+    const [labDones, setLabDones] = useState<number>(0)
+    const [summary, setSummary] = useState<number>(0)
+
+    useEffect(() => {
+        getLecturePresences()
+        getPracticePresences()
+        getLabDones()
+        getSummary()
+    }, [JSON.stringify(student)])
+
+    const getLecturePresences = () => {
+        let count = 0
+        student.lectures.forEach(lecture => {
+            if (lecture.presence) count++
+        })
+
+        setLecturePresences(count)
+    }
+
+    const getPracticePresences = () => {
+        let count = 0
+        student.practices.forEach(practice => {
+            if (practice.value != 'Н') count++
+        })
+
+        setPracticePresences(count)
+    }
+
+    const getLabDones = () => {
+        let count = 0
+        student.labs.forEach(lab => {
+            let tasks_count = 0
+            lab.tasks.forEach(task => {
+                if (task == true) tasks_count++
+            })
+            if (tasks_count == lab.tasks.length) count++
+        })
+        setLabDones(count)
+    }
+
+    const getSummary = () => {
+        let summary = 0
+
+        student.lectures.forEach(lecture => {
+            if (lecture.presence) {
+                for (let score of scores) {
+                    if (score.value == 'Н') {
+                        if (score.score > 0) {
+                            summary += score.score
+                        } else {
+                            summary -= score.score
+                        }
+                        break
+                    }
+                }
+            }
+            
+        })
+
+        student.practices.forEach(practice => {
+            for (let score of scores) {
+                if (score.type == 'number' && score.value == practice.value) {
+                    if (score.score > 0) {
+                        summary += score.score
+                    } else {
+                        summary -= score.score
+                    }
+                    break
+                }
+            }
+        })
+
+        student.labs.forEach(lab => {
+            lab.tasks.forEach(task => {
+                if (task) {
+                    for (let score of scores) {
+                        if (score.type == 'checkbox' && score.value == String(lab.checkboxColor)) {
+                            if (score.score > 0) {
+                                summary += score.score
+                            } else {
+                                summary -= score.score
+                            }
+                            break
+                        }
+                    }
+                }
+            })
+        })
+
+        setSummary(summary)
+    }
 
     return (
         <div 
@@ -126,7 +224,7 @@ const Student = (
                                                 id={String(count)}
                                                 checked={task}
                                                 onChange={(e) => onCheckLabTask(student.groupID, student.id, lab.id, Number(e.target.id))}
-                                                style={{accentColor: '#B52F2F'}}
+                                                style={{accentColor: checkboxColors[lab.checkboxColor]}}
                                             />
                                         </div>
                                     }
@@ -138,12 +236,12 @@ const Student = (
                 </div>
             </div>
             <div className={cl.counts}>
-                <p className={cl.table_value}>{student.lecture_presences}/{student.lectures.length}</p>
-                <p className={cl.table_value}>{student.practice_presences}/{student.practices.length}</p>
-                <p className={cl.table_value}>{student.lab_dones}/{student.labs.length}</p>
+                <p className={cl.table_value}>{lecturePresneces}/{student.lectures.length}</p>
+                <p className={cl.table_value}>{practicePresneces}/{student.practices.length}</p>
+                <p className={cl.table_value}>{labDones}/{student.labs.length}</p>
             </div>
             <div className={cl.summary}>
-                <p className={cl.table_sum}>{student.summary}</p>
+                <p className={cl.table_sum}>{summary}</p>
             </div>
         </div>
     )
