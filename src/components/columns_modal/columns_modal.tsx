@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import cl from './columns_modal.module.sass'
+import getRandomInt from '../../utils/random'
 
 const ColumnsModal = (
     {
@@ -23,12 +24,13 @@ const ColumnsModal = (
                 ? `${date?.split('-')[2]}/${date?.split('-')[1]}`
                 : `${new Date().toISOString().split('-')[2].split('T')[0]}/${new Date().toISOString().split('-')[1]}`
             const lesson: any = {
-                id: String(Date.now() + Math.floor((Math.random() * 100) + 1)),
+                id: String(Date.now() + getRandomInt(0, 10000)),
+                cellID: String(Date.now() + getRandomInt(0, 10000)),
                 date: lesson_date,
             }
             switch (lessonType) {
                 case 'lecture':
-                    lesson.presence = true
+                    lesson.value = ''
                     columns.push(lesson)
                     break
                 case 'practice':
@@ -36,7 +38,14 @@ const ColumnsModal = (
                     columns.push(lesson)
                     break
                 case 'lab':
-                    lesson.tasks = [false, false, false]
+                    lesson.tasks = []
+                    for (let i = 0; i < 3; i++) {
+                        lesson.tasks.push({
+                            id: String(Date.now() + getRandomInt(0, 10000)),
+                            value: '',
+                            valueType: 'symbol'
+                        })
+                    }
                     lesson.checkboxColor = '0'
                     columns.push(lesson)
             }

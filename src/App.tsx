@@ -150,7 +150,6 @@ const Home = () => {
                 switch (lessonType) {
                     case 'lecture':
                         for (let lecture of student.lectures) {
-                            console.log(lecture.id)
                             if (lecture.id == lessonID) {
                                 lecture.date = date
                                 break
@@ -189,7 +188,11 @@ const Home = () => {
                         if (tasksCount > lab.tasks.length) {
                             const newTasks = []
                             for (let i = 0; i < tasksCount - lab.tasks.length; i++) {
-                                newTasks.push(false)
+                                newTasks.push({
+                                    id: String(Date.now() + getRandomInt(0, 10000)),
+                                    value: '',
+                                    valueType: 'symbol'
+                                })
                             }
                             Array.prototype.push.apply(lab.tasks, newTasks)
                         } else {
