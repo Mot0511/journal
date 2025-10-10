@@ -1,5 +1,5 @@
 import type GroupType from "./types/group"
-import type ScoreType from "./types/scores"
+import type {ScoresType} from "./types/scores"
 
 const groups_data: GroupType[] = [
     {
@@ -15,29 +15,34 @@ const groups_data: GroupType[] = [
                     {
                         id: '1',
                         date: '04/09',
-                        presence: true
+                        value: 'Н',
+                        valueType: 'symbol'
                     },
                     {
                         id: '2',
                         date: '04/09',
-                        presence: false
+                        value: '',
+                        valueType: 'symbol'
                     },
                     {
                         id: '3',
                         date: '04/09',
-                        presence: true
+                        value: 'Н',
+                        valueType: 'symbol'
                     },
                 ],
                 practices: [
                     {
                         id: '4',
                         date: '04/09',
-                        value: '1.0'
+                        value: '1.0',
+                        valueType: 'number'
                     },
                     {
                         id: '5',
                         date: '04/09',
-                        value: '3.0'
+                        value: '3.0',
+                        valueType: 'number'
                     }
                 ],
                 labs: [
@@ -45,206 +50,46 @@ const groups_data: GroupType[] = [
                         id: '6',
                         number: 1,
                         date: '04/10',
-                        tasks: [true, true, false, true],
-                        checkboxColor: 0
+                        tasks: [
+                            {
+                                id: '6',
+                                value: '0',
+                                valueType: 'checkbox'
+                            },
+                            {
+                                id: '7',
+                                value: '1',
+                                valueType: 'checkbox'
+                            },
+                            {
+                                id: '8',
+                                value: '2',
+                                valueType: 'checkbox'
+                            }
+                        ],
                     },
                     {
                         id: '7',
-                        number: 2,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 1
-                    },
-                    {
-                        id: '8',
-                        number: 3,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 2
-                    }
-                ],
-                lecture_presences: 10,
-                practice_presences: 7,
-                lab_dones: 75,
-                summary: 92
-            },
-            {
-                id: '4000',
-                name: 'А',
-                groupID: '100',
-                lectures: [
-                    {
-                        id: '1',
-                        date: '04/09',
-                        presence: true
-                    },
-                    {
-                        id: '2',
-                        date: '04/09',
-                        presence: false
-                    },
-                    {
-                        id: '3',
-                        date: '04/09',
-                        presence: true
-                    },
-                ],
-                practices: [
-                    {
-                        id: '4',
-                        date: '04/09',
-                        value: '1.0'
-                    },
-                    {
-                        id: '5',
-                        date: '04/09',
-                        value: '3.0'
-                    }
-                ],
-                labs: [
-                    {
-                        id: '6',
                         number: 1,
                         date: '04/10',
-                        tasks: [true, true, false, true],
-                        checkboxColor: 0
+                        tasks: [
+                            {
+                                id: '9',
+                                value: '0',
+                                valueType: 'checkbox'
+                            },
+                            {
+                                id: '10',
+                                value: '1',
+                                valueType: 'checkbox'
+                            },
+                            {
+                                id: '11',
+                                value: '2',
+                                valueType: 'checkbox'
+                            }
+                        ],
                     },
-                    {
-                        id: '7',
-                        number: 2,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 1
-                    },
-                    {
-                        id: '8',
-                        number: 3,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 2
-                    }
-                ],
-                lecture_presences: 10,
-                practice_presences: 7,
-                lab_dones: 75,
-                summary: 92
-            },
-            {
-                id: '3000',
-                name: 'в',
-                groupID: '100',
-                lectures: [
-                    {
-                        id: '1',
-                        date: '04/09',
-                        presence: true
-                    },
-                    {
-                        id: '2',
-                        date: '04/09',
-                        presence: false
-                    },
-                    {
-                        id: '3',
-                        date: '04/09',
-                        presence: true
-                    },
-                ],
-                practices: [
-                    {
-                        id: '4',
-                        date: '04/09',
-                        value: '1.0'
-                    },
-                    {
-                        id: '5',
-                        date: '04/09',
-                        value: '3.0'
-                    }
-                ],
-                labs: [
-                    {
-                        id: '6',
-                        number: 1,
-                        date: '04/10',
-                        tasks: [true, true, false, true],
-                        checkboxColor: 0
-                    },
-                    {
-                        id: '7',
-                        number: 2,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 1
-                    },
-                    {
-                        id: '8',
-                        number: 3,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 2
-                    }
-                ],
-                lecture_presences: 10,
-                practice_presences: 7,
-                lab_dones: 75,
-                summary: 92
-            },
-            {
-                id: '2000',
-                name: 'Б',
-                groupID: '100',
-                lectures: [
-                    {
-                        id: '1',
-                        date: '04/09',
-                        presence: true
-                    },
-                    {
-                        id: '2',
-                        date: '04/09',
-                        presence: false
-                    },
-                    {
-                        id: '3',
-                        date: '04/09',
-                        presence: true
-                    },
-                ],
-                practices: [
-                    {
-                        id: '4',
-                        date: '04/09',
-                        value: '1.0'
-                    },
-                    {
-                        id: '5',
-                        date: '04/09',
-                        value: '3.0'
-                    }
-                ],
-                labs: [
-                    {
-                        id: '6',
-                        number: 1,
-                        date: '04/10',
-                        tasks: [true, true, false, true],
-                        checkboxColor: 0
-                    },
-                    {
-                        id: '7',
-                        number: 2,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 1
-                    },
-                    {
-                        id: '8',
-                        number: 3,
-                        date: '04/10',
-                        tasks: [true, true, false, true, true],
-                        checkboxColor: 2
-                    }
                 ],
                 lecture_presences: 10,
                 practice_presences: 7,
@@ -255,43 +100,67 @@ const groups_data: GroupType[] = [
     },
 ]
 
-const scores_data: ScoreType[] = [
-    {
-        id: 6,
-        type: 'number',
-        value: '1',
-        score: 1
-    },
-    {
-        id: 1,
-        type: 'number',
-        value: '5',
-        score: 5
-    },
-    {
-        id: 2,
-        type: 'checkbox',
-        value: '0',
-        score: 10
-    },
-    {
-        id: 3,
-        type: 'checkbox',
-        value: '1',
-        score: 20
-    },
-    {
-        id: 4,
-        type: 'checkbox',
-        value: '2',
-        score: 30
-    },
-    {
-        id: 5,
-        type: 'symbol',
-        value: 'Н',
-        score: -1
-    },
-]
+const scores_data: ScoresType = {
+    lectures: [
+        {
+            id: 1,
+            type: 'symbol',
+            mark: 'Н',
+            score: -1
+        }
+    ],
+    practices: [
+        {
+            id: 2,
+            type: 'number',
+            mark: '1.0',
+            score: 1
+        },
+        {
+            id: 2,
+            type: 'number',
+            mark: '2.0',
+            score: 2
+        },
+        {
+            id: 3,
+            type: 'number',
+            mark: '3.0',
+            score: 3
+        },
+        {
+            id: 4,
+            type: 'number',
+            mark: '4.0',
+            score: 4
+        },
+        {
+            id: 5,
+            type: 'number',
+            mark: '5.0',
+            score: 5
+        }
+    ],
+    labs: [
+        {
+            id: 6,
+            type: 'checkbox',
+            mark: '0',
+            score: 10
+        },
+        {
+            id: 7,
+            type: 'checkbox',
+            mark: '1',
+            score: 20
+        },
+        {
+            id: 8,
+            type: 'checkbox',
+            mark: '2',
+            score: 30
+        }
+    ]
+}
 
 export {groups_data, scores_data}

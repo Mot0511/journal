@@ -3,16 +3,17 @@ import './globals.css';
 import Header from './components/header/header';
 import Table from './components/table/table';
 import type GroupType from './types/group';
-import type ScoresType from './types/scores';
+import type {ScoresType} from './types/scores';
 import {groups_data, scores_data} from './data'
 import alphabet from './consts/alphabet';
+import type StudentType from './types/student';
 
 const Home = () => {
 
     const [teacher, setTeacher] = useState<string>('ФИО преподавателя');
     const [subject, setSubject] = useState<string>('Предмет');
     const [groups, setGroups] = useState<GroupType[]>(groups_data)
-    const [scores, setScores] = useState<ScoresType[]>(scores_data)
+    const [scores, setScores] = useState<ScoresType>(scores_data)
 
     const [selectedStudents, setSelectedStudents] = useState<string[]>([])
     const [selectedColumns, setSelectedColumns] = useState<string[]>([])
@@ -27,13 +28,15 @@ const Home = () => {
                     name: name,
                     groupID: groupID,
                     lectures: group.students[0].lectures.map(lecture => {
-                        return {id: lecture.id, date: lecture.date, presence: true}
+                        return {id: lecture.id, date: lecture.date, value: '', valueType: 'string'}
                     }),
                     practices: group.students[0].practices.map(practice => {
-                        return {id: practice.id, date: practice.date, value: ''}
+                        return {id: practice.id, date: practice.date, value: '', valueType: 'string'}
                     }),
                     labs: group.students[0].labs.map(lab => {
-                        return {id: lab.id, number: lab.number, date: lab.date, checkboxColor: lab.checkboxColor, tasks: lab.tasks.map(_ => false)}
+                        return {id: lab.id, number: lab.number, date: lab.date, tasks: lab.tasks.map(_ => {
+                            return {id: String(Date.now()), value: '', valueType: 'string'}
+                        })}
                     }),
                     lecture_presences: 0,
                     practice_presences: 0,
@@ -60,50 +63,59 @@ const Home = () => {
         }
     }
 
-    const onCheckLabTask = (groupID: string, studentID: string, labID: string, taskID: number) => {
-        setGroups(groups.map(group => {
-            if (group.id == groupID) {
-                group.students = group.students.map(student => {
-                    if (student.id == studentID) {
-                        student.labs = student.labs.map(lab => {
+    const onSetLabTaskValue = (student: StudentType, labID: string, taskID: string, value: string, valueType: string) => {
+        for (let group of groups) {
+            if (group.id == student.groupID) {
+                for (let person of group.students) {
+                    if (person.id == student.id) {
+                        for (let lab of student.labs) {
                             if (lab.id == labID) {
-                                lab.tasks[taskID] = !lab.tasks[taskID]
+                                for (let task of lab.tasks) {
+                                    if (task.id == taskID) {
+                                        task.value = value
+                                        task.valueType = valueType
+                                        break
+                                    }
+                                }
+                                break
                             }
-                            return lab
-                        })
+                        }
+                        break
                     }
-                    return student
-                })
+                }
+                break
             }
-            return group
-        }))
+        }
+        setGroups(groups)
     }
 
-    const onSetCellValue = (groupID: string, studentID: string, lessonID: string, lessonType: string, value: string) => {
-        setGroups(groups.map(group => {
-            console.log(group.students)
-            if (group.id == groupID) {
+    const onSetCellValue = (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => {
+        for (let group of groups) {
+            if (group.id == student.groupID) {
                 group.students.forEach(student => {
-                    if (student.id == studentID) {
+                    if (student.id == student.id) {
                         if (lessonType == 'lecture') {
                             student.lectures.forEach(lecture => {
                                 if (lecture.id == lessonID) {
-                                    lecture.presence = value ? false : true
+                                    lecture.value = value
+                                    lecture.valueType = valueType
                                 }
                             })
                         } else if (lessonType == 'practice') {
                             student.practices.forEach(practice => {
                                 if (practice.id == lessonID) {
                                     practice.value = value
+                                    practice.valueType = valueType
                                 }
                             })
                         }
                     }
                     
                 })
+                break
             }
-            return group
-        }))
+        }
+        setGroups(groups)
     }
 
     const onAddColumns = (columns: any, lessonType: string) => {
@@ -166,12 +178,11 @@ const Home = () => {
         }))
     }
 
-    const editLabTasks = (labID: string, tasksCount: number, checkboxColor: number) => {
+    const editLabTasks = (labID: string, tasksCount: number) => {
         setGroups(groups.map(group => {
             group.students.forEach(student => {
                 for (let lab of student.labs) {
                     if (lab.id == labID) {
-                        lab.checkboxColor = checkboxColor
                         if (tasksCount > lab.tasks.length) {
                             const newTasks = []
                             for (let i = 0; i < tasksCount - lab.tasks.length; i++) {
@@ -233,8 +244,8 @@ const Home = () => {
                 <Table 
                     groups={groups} 
                     onStudentSelected={onStudentSelected}
-                    onCheckLabTask={onCheckLabTask}
                     onSetCellValue={onSetCellValue}
+                    onSetLabTaskValue={onSetLabTaskValue}
                     editDate={editDate}
                     selectedColumns={selectedColumns}
                     setSelectedColumns={setSelectedColumns}

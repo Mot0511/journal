@@ -2,23 +2,24 @@ import { useState } from 'react'
 import cl from './group.module.sass'
 import Student from '../student/student';
 import type GroupType from '../../types/group';
-import type ScoreType from '../../types/scores';
+import type {ScoresType} from '../../types/scores';
+import type StudentType from '../../types/student';
 
 const Group = (
     {
         group,
         onStudentSelected,
         onSetCellValue,
-        onCheckLabTask,
+        onSetLabTaskValue,
         hiddenStudents,
         scores,
     }: {
         group: GroupType,
         onStudentSelected: (studentID: string, isSelected: boolean) => void
-        onSetCellValue: (groupID: string, studentID: string, lessonID: string, lessonType: string, value: string) => void
-        onCheckLabTask: (groupID: string, studentID: string, labID: string, taskID: number) => void
+        onSetCellValue: (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => void
+        onSetLabTaskValue: (student: StudentType, labID: string, taskID: string, value: string, valueType: string) => void
         hiddenStudents: string[],
-        scores: ScoreType[]
+        scores: ScoresType
     }) => {
 
     const [isStudentsVisible, setIsStudentsVisible] = useState<boolean>(true);
@@ -36,8 +37,8 @@ const Group = (
                             return <Student 
                                 student={student} 
                                 onSelected={onStudentSelected} 
-                                onCheckLabTask={onCheckLabTask}
                                 onSetCellValue={onSetCellValue}
+                                onSetLabTaskValue={onSetLabTaskValue}
                                 scores={scores}
                             />
                         }

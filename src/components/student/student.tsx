@@ -1,33 +1,32 @@
 import { useEffect, useState } from 'react'
 import cl from './student.module.sass';
 import type StudentType from '../../types/student';
-import type Cell from '../../types/cell';
-import checkboxColors from '../../consts/checkbox_colors';
-import type ScoreType from '../../types/scores';
+import type { ScoresType } from '../../types/scores';
+import Cell from '../cell/cell';
 
 const Student = (
     {
         student,
         onSelected,
         onSetCellValue,
-        onCheckLabTask,
+        onSetLabTaskValue,
         scores
     }: {
         student: StudentType
         onSelected: (studentID: string, isSelected: boolean) => void
-        onSetCellValue: (groupID: string, studentID: string, lessonID: string, lessonType: string, value: string) => void
-        onCheckLabTask: (groupID: string, studentID: string, labID: string, taskID: number) => void
-        scores: ScoreType[]
+        onSetCellValue: (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => void
+        onSetLabTaskValue: (student: StudentType, labID: string, taskID: string, value: string, valueType: string) => void
+        scores: ScoresType
     }) => {
 
     const [isSelected, setIsSelected] = useState<boolean>(false)
-    const [selectedCell, setSelectedCell] = useState<Cell | null>()
-    const [selectedCellValue, setSelectedCellValue] = useState<string>('')
     
     const [lecturePresneces, setLecturePresences] = useState<number>(0)
     const [practicePresneces, setPracticePresences] = useState<number>(0)
     const [labDones, setLabDones] = useState<number>(0)
     const [summary, setSummary] = useState<number>(0)
+
+    const [selectedCell, setSelectedCell] = useState<string>()
 
     useEffect(() => {
         getLecturePresences()
@@ -39,7 +38,7 @@ const Student = (
     const getLecturePresences = () => {
         let count = 0
         student.lectures.forEach(lecture => {
-            if (lecture.presence) count++
+            if (lecture.value != 'Н') count++
         })
 
         setLecturePresences(count)
@@ -59,7 +58,7 @@ const Student = (
         student.labs.forEach(lab => {
             let tasks_count = 0
             lab.tasks.forEach(task => {
-                if (task == true) tasks_count++
+                if (task.value) tasks_count++
             })
             if (tasks_count == lab.tasks.length) count++
         })
@@ -70,24 +69,8 @@ const Student = (
         let summary = 0
 
         student.lectures.forEach(lecture => {
-            if (lecture.presence) {
-                for (let score of scores) {
-                    if (score.value == 'Н') {
-                        if (score.score > 0) {
-                            summary += score.score
-                        } else {
-                            summary -= score.score
-                        }
-                        break
-                    }
-                }
-            }
-            
-        })
-
-        student.practices.forEach(practice => {
-            for (let score of scores) {
-                if (score.type == 'number' && score.value == practice.value) {
+            for (let score of scores.lectures) {
+                if (score.mark == lecture.value) {
                     if (score.score > 0) {
                         summary += score.score
                     } else {
@@ -98,18 +81,28 @@ const Student = (
             }
         })
 
+        student.practices.forEach(practice => {
+            for (let score of scores.practices) {
+                if (score.mark == practice.value) {
+                    if (score.score > 0) {
+                        summary += score.score
+                    } else {
+                        summary -= score.score
+                    }
+                }
+            }
+        })
+
         student.labs.forEach(lab => {
             lab.tasks.forEach(task => {
-                if (task) {
-                    for (let score of scores) {
-                        if (score.type == 'checkbox' && score.value == String(lab.checkboxColor)) {
-                            if (score.score > 0) {
-                                summary += score.score
-                            } else {
-                                summary -= score.score
-                            }
-                            break
+                for (let score of scores.labs) {
+                    if (score.mark == task.value) {
+                        if (score.score > 0) {
+                            summary += score.score
+                        } else {
+                            summary -= score.score
                         }
+                        break
                     }
                 }
             })
@@ -132,79 +125,31 @@ const Student = (
             </div>
             <div className={cl.marks + ' ' + cl.lectures_marks}>
                 {
-                    student.lectures.map((lecture) => {
-                        return <div className={cl.mark} style={{color: 'red'}} onClick={() => {
-                                    setSelectedCellValue(lecture.presence ? '' : 'Н')
-                                    setSelectedCell(
-                                        {
-                                            id: lecture.id,
-                                            studentID: student.id,
-                                            lessonID: lecture.id,
-                                            lessonType: 'lecture'
-                                        }
-                                    )
-                                }
-                            }>
-                            {
-                                selectedCell && selectedCell.lessonID == lecture.id
-                                    ? <input 
-                                        type="text" 
-                                        maxLength={1} 
-                                        className={cl.cell_input} 
-                                        style={{width: '30px', color: 'red'}}
-                                        value={selectedCellValue}
-                                        onChange={e => {
-                                            if (['', 'н', 'Н'].includes(e.target.value)) {
-                                                setSelectedCellValue(e.target.value.toUpperCase())
-                                            }
-                                        }}
-                                        onBlur={() => {
-                                            onSetCellValue(student.groupID, student.id, lecture.id, 'lecture', selectedCellValue)
-                                            setSelectedCell(null)
-                                            setSelectedCellValue('')
-                                        }}
-                                    />
-                                    : lecture.presence == false && 'Н'
-                            }
-                        </div>
-                    })
+                    student.lectures.map((lecture) => 
+                        <Cell
+                            lesson={lecture}
+                            scores={scores.lectures}
+                            isSelected={selectedCell == lecture.id}
+                            setSelectedCell={setSelectedCell}
+                            onSetCellValue={(value: string, valueType: string) => {
+                                onSetCellValue(student, lecture.id, 'lecture', value, valueType)
+                            }}
+                        />
+                    )
                 }
             </div>
             <div className={cl.marks + ' ' + cl.practic_marks}>
                 {
                     student.practices.map((practice) => 
-                        <div className={cl.mark} style={{color: practice.value == 'Н' ? 'red' : 'black'}} onClick={() => {
-                            setSelectedCellValue(practice.value)
-                            setSelectedCell(
-                                {
-                                    id: practice.id,
-                                    studentID: student.id,
-                                    lessonID: practice.id,
-                                    lessonType: 'practice'
-                                }
-                            )
-                        }
-                    }>
-
-                            {
-                                selectedCell && selectedCell.lessonID == practice.id
-                                ? <input 
-                                    type="text" 
-                                    className={cl.cell_input} 
-                                    style={{width: '30px', color: selectedCellValue == 'Н' ? 'red' : 'black'}}
-                                    value={selectedCellValue}
-                                    onChange={e => {
-                                        setSelectedCellValue(e.target.value.toUpperCase())
-                                    }}
-                                    onBlur={() => {
-                                        onSetCellValue(student.groupID, student.id, practice.id, 'practice', selectedCellValue)
-                                        setSelectedCell(null)
-                                        setSelectedCellValue('')
-                                    }}
-                                />
-                                : practice.value
-                            }
-                        </div>
+                        <Cell 
+                            lesson={practice}
+                            scores={scores.practices}
+                            isSelected={selectedCell == practice.id}
+                            setSelectedCell={setSelectedCell}
+                            onSetCellValue={(value: string, valueType: string) => {
+                                onSetCellValue(student, practice.id, 'practice', value, valueType)
+                            }}
+                        />
                     )
                 }
             </div>
@@ -217,16 +162,15 @@ const Student = (
                                 {
                                     lab.tasks.map(task => {
                                         count += 1
-                                        return <div className={cl.mark}>
-                                            <input 
-                                                type="checkbox" 
-                                                className={'checkbox'}
-                                                id={String(count)}
-                                                checked={task}
-                                                onChange={(e) => onCheckLabTask(student.groupID, student.id, lab.id, Number(e.target.id))}
-                                                style={{accentColor: checkboxColors[lab.checkboxColor]}}
-                                            />
-                                        </div>
+                                        return <Cell 
+                                            lesson={task}
+                                            isSelected={selectedCell == task.id}
+                                            scores={scores.labs}
+                                            setSelectedCell={setSelectedCell}
+                                            onSetCellValue={(value: string, valueType: string) => {
+                                                onSetLabTaskValue(student, lab.id, task.id, value, valueType)
+                                            }}
+                                        />
                                     }
                                     )
                                 }

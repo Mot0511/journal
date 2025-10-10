@@ -2,14 +2,15 @@ import cl from './table.module.sass';
 import TableHeader from '../table_header/table_header';
 import Group from '../group/group';
 import type GroupType from '../../types/group';
-import type ScoreType from '../../types/scores';
+import type {ScoresType} from '../../types/scores';
+import type StudentType from '../../types/student';
 
 const Table = (
     {
         groups, 
         onStudentSelected,
         onSetCellValue,
-        onCheckLabTask,
+        onSetLabTaskValue,
         editDate,
         selectedColumns,
         setSelectedColumns,
@@ -23,14 +24,14 @@ const Table = (
     }: {
         groups: GroupType[],
         onStudentSelected: (studentID: string, isSelected: boolean) => void
-        onSetCellValue: (groupID: string, studentID: string, lessonID: string, lessonType: string, value: string) => void
-        onCheckLabTask: (groupID: string, studentID: string, labID: string, taskID: number) => void,
+        onSetCellValue: (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => void
+        onSetLabTaskValue: (student: StudentType, labID: string, taskID: string, value: string, valueType: string) => void
         editDate: (lessonID: string, lessonType: string, date: string) => void,
         selectedColumns: string[],
         setSelectedColumns: (columns: string[]) => void,
-        editLabTasks: (labID: string, tasksCount: number, checkboxColors: number) => void,
-        scores: ScoreType[],
-        setScores: (scores: ScoreType[]) => void,
+        editLabTasks: (labID: string, tasksCount: number) => void,
+        scores: ScoresType,
+        setScores: (scores: ScoresType) => void,
         hiddenStudents: string[],
         setHiddenStudents: (students: string[]) => void
         isFiltersCollapsed: boolean,
@@ -56,8 +57,8 @@ const Table = (
                 groups.map(group => <Group 
                     group={group} 
                     onStudentSelected={onStudentSelected}
-                    onCheckLabTask={onCheckLabTask}
                     onSetCellValue={onSetCellValue}
+                    onSetLabTaskValue={onSetLabTaskValue}
                     hiddenStudents={hiddenStudents}
                     scores={scores}
                 />)

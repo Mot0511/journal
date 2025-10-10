@@ -5,9 +5,9 @@ import { IoSettingsOutline } from 'react-icons/io5';
 import TasksModal from '../tasks_modal/tasks_modal';
 import type LabType from '../../types/lab';
 import ScoresModal from '../scores_modal/scores_modal';
-import type ScoreType from '../../types/scores';
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import type StudentType from '../../types/student';
+import type { ScoresType, ScoreType } from '../../types/scores';
 
 const TableHeader = (
         {
@@ -28,9 +28,9 @@ const TableHeader = (
             editDate: (lessonID: string, lessonType: string, date: string) => void
             selectedColumns: string[],
             setSelectedColumns: (columns: string[]) => void
-            editLabTasks: (labID: string, tasksCount: number, checkboxColors: number) => void,
-            scores: ScoreType[],
-            setScores: (scores: ScoreType[]) => void,
+            editLabTasks: (labID: string, tasksCount: number) => void,
+            scores: ScoresType,
+            setScores: (scores: ScoresType) => void,
             hiddenStudents: string[],
             setHiddenStudents: (students: string[]) => void
             isFiltersCollapsed: boolean,
@@ -42,7 +42,7 @@ const TableHeader = (
     const [editingLessonValue, setEditingLessonValue] = useState<string>('')
 
     const [editingLab, setEditingLab] = useState<LabType | null>()
-    const [isEditingScores, setIsEditingScores] = useState<boolean>(false)
+    const [editingLessonsType, setEditingLessonsType] = useState<string | null>()
     const [isHideEverybody, setIsHideEverybody] = useState<boolean>(false)
 
     const getStudents = (): StudentType[] => {
@@ -58,26 +58,36 @@ const TableHeader = (
             {
                 editingLab &&
                     <TasksModal
-                        onEditTasks={(tasksCount: number, checkboxColors: number) => {
-                            editLabTasks(editingLab.id, tasksCount, checkboxColors)
+                        onEditTasks={(tasksCount: number) => {
+                            editLabTasks(editingLab.id, tasksCount)
                             setEditingLab(null)
                         }}
                         onCancel={() => {
                             setEditingLab(null)
                         }}
                         tasksCount={editingLab.tasks.length}
-                        checkboxColor_data={editingLab.checkboxColor}
                     />
             }
             {
-                isEditingScores &&
+                editingLessonsType &&
                     <ScoresModal
+                        lessonsType={editingLessonsType}
                         scoresData={scores}
-                        setScoresData={(scores: ScoreType[]) => {
+                        setScoresData={(newScores: ScoreType[]) => {
+                            switch (editingLessonsType) {
+                                case 'lectures':
+                                    scores.lectures = newScores
+                                    break
+                                case 'practices':
+                                    scores.practices = newScores
+                                    break
+                                case 'labs':
+                                    scores.labs = newScores
+                            }
                             setScores(scores)
-                            setIsEditingScores(false)
+                            setEditingLessonsType(null)
                         }}
-                        onCancel={() => setIsEditingScores(false)}
+                        onCancel={() => setEditingLessonsType(null)}
                     />
             }
             <div className={cl.student_name_box + ' ' + cl.table_header_box}>
@@ -129,7 +139,7 @@ const TableHeader = (
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
                 <div className={cl.lectures_header}>
                     <h3>Лекции</h3>
-                    <button className={cl.scoresBtn} onClick={() => setIsEditingScores(!isEditingScores)}><IoSettingsOutline /></button>
+                    <button className={cl.scoresBtn} onClick={() => setEditingLessonsType('lectures')}><IoSettingsOutline /></button>
                 </div>
                 <div className={cl.days}>
                     {
@@ -176,7 +186,7 @@ const TableHeader = (
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
                 <div className={cl.practices_header}>
                     <h3>Практика</h3>
-                    <button className={cl.scoresBtn} onClick={() => setIsEditingScores(!isEditingScores)}><IoSettingsOutline /></button>
+                    <button className={cl.scoresBtn} onClick={() => setEditingLessonsType('practices')}><IoSettingsOutline /></button>
                 </div>
                 <div className={cl.days}>
                     {
@@ -220,7 +230,7 @@ const TableHeader = (
             <div className={cl.table_header_box + ' ' + cl.labs_header_box}>
                 <div className={cl.labs_header}>
                     <h3>Лабораторные работы</h3>
-                    <button className={cl.scoresBtn} onClick={() => setIsEditingScores(!isEditingScores)}><IoSettingsOutline /></button>
+                    <button className={cl.scoresBtn} onClick={() => setEditingLessonsType('labs')}><IoSettingsOutline /></button>
                 </div>
                 <div className={cl.labs}>
                     {
