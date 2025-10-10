@@ -7,6 +7,7 @@ import type {ScoresType} from './types/scores';
 import {groups_data, scores_data} from './data'
 import alphabet from './consts/alphabet';
 import type StudentType from './types/student';
+import getRandomInt from './utils/random';
 
 const Home = () => {
 
@@ -28,14 +29,14 @@ const Home = () => {
                     name: name,
                     groupID: groupID,
                     lectures: group.students[0].lectures.map(lecture => {
-                        return {id: lecture.id, date: lecture.date, value: '', valueType: 'string'}
+                        return {id: lecture.id, cellID: String(Date.now() + getRandomInt(0, 10000)), date: lecture.date, value: '', valueType: 'string'}
                     }),
                     practices: group.students[0].practices.map(practice => {
-                        return {id: practice.id, date: practice.date, value: '', valueType: 'string'}
+                        return {id: practice.id, cellID: String(Date.now() + getRandomInt(0, 10000)), date: practice.date, value: '', valueType: 'string'}
                     }),
                     labs: group.students[0].labs.map(lab => {
                         return {id: lab.id, number: lab.number, date: lab.date, tasks: lab.tasks.map(_ => {
-                            return {id: String(Date.now()), value: '', valueType: 'string'}
+                            return {id: String(Date.now() + getRandomInt(0, 10000)), value: '', valueType: 'string'}
                         })}
                     }),
                     lecture_presences: 0,
@@ -92,26 +93,28 @@ const Home = () => {
     const onSetCellValue = (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => {
         for (let group of groups) {
             if (group.id == student.groupID) {
-                group.students.forEach(student => {
-                    if (student.id == student.id) {
+                for (let person of group.students) {
+                    if (person.id == student.id) {
                         if (lessonType == 'lecture') {
-                            student.lectures.forEach(lecture => {
+                            for (let lecture of person.lectures) {
                                 if (lecture.id == lessonID) {
                                     lecture.value = value
                                     lecture.valueType = valueType
+                                    break
                                 }
-                            })
+                            }
                         } else if (lessonType == 'practice') {
-                            student.practices.forEach(practice => {
+                            for (let practice of person.practices) {
                                 if (practice.id == lessonID) {
                                     practice.value = value
                                     practice.valueType = valueType
+                                    break
                                 }
-                            })
+                            }
                         }
+                        break
                     }
-                    
-                })
+                }
                 break
             }
         }

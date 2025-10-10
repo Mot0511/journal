@@ -23,6 +23,7 @@ const Group = (
     }) => {
 
     const [isStudentsVisible, setIsStudentsVisible] = useState<boolean>(true);
+    const [selectedCell, setSelectedCell] = useState<string | null>(null)
 
     return (
         <div className={cl.group}>
@@ -39,6 +40,8 @@ const Group = (
                                 onSelected={onStudentSelected} 
                                 onSetCellValue={onSetCellValue}
                                 onSetLabTaskValue={onSetLabTaskValue}
+                                selectedCell={selectedCell}
+                                setSelectedCell={setSelectedCell}
                                 scores={scores}
                             />
                         }

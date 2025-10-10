@@ -10,12 +10,16 @@ const Student = (
         onSelected,
         onSetCellValue,
         onSetLabTaskValue,
+        selectedCell,
+        setSelectedCell,
         scores
     }: {
         student: StudentType
         onSelected: (studentID: string, isSelected: boolean) => void
         onSetCellValue: (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => void
         onSetLabTaskValue: (student: StudentType, labID: string, taskID: string, value: string, valueType: string) => void
+        selectedCell: string | null,
+        setSelectedCell: (lessonID: string | null) => void,
         scores: ScoresType
     }) => {
 
@@ -26,7 +30,7 @@ const Student = (
     const [labDones, setLabDones] = useState<number>(0)
     const [summary, setSummary] = useState<number>(0)
 
-    const [selectedCell, setSelectedCell] = useState<string | null>()
+    
 
     useEffect(() => {
         getLecturePresences()
@@ -129,7 +133,7 @@ const Student = (
                         <Cell
                             lesson={lecture}
                             scores={scores.lectures}
-                            isSelected={selectedCell == lecture.id}
+                            isSelected={selectedCell == lecture.cellID}
                             setSelectedCell={setSelectedCell}
                             onSetCellValue={(value: string, valueType: string) => {
                                 onSetCellValue(student, lecture.id, 'lecture', value, valueType)
@@ -144,7 +148,7 @@ const Student = (
                         <Cell 
                             lesson={practice}
                             scores={scores.practices}
-                            isSelected={selectedCell == practice.id}
+                            isSelected={selectedCell == practice.cellID}
                             setSelectedCell={setSelectedCell}
                             onSetCellValue={(value: string, valueType: string) => {
                                 onSetCellValue(student, practice.id, 'practice', value, valueType)

@@ -21,7 +21,7 @@ const Cell = (
     return (
         <div className={cl.cell} style={{color: lesson.value == 'Н' ? 'red' : 'black', background: isSelected ? '#EFF3F9' : 'none'}} onClick={() => {
                 setSelectedCell(
-                    lesson.id
+                    lesson.cellID ? lesson.cellID : lesson.id
                 )
             }
         }>

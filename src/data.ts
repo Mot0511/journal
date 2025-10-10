@@ -14,18 +14,21 @@ const groups_data: GroupType[] = [
                 lectures: [
                     {
                         id: '1',
+                        cellID: '1',
                         date: '04/09',
                         value: 'Н',
                         valueType: 'symbol'
                     },
                     {
                         id: '2',
+                        cellID: '2',
                         date: '04/09',
                         value: '',
                         valueType: 'symbol'
                     },
                     {
                         id: '3',
+                        cellID: '3',
                         date: '04/09',
                         value: 'Н',
                         valueType: 'symbol'
@@ -34,12 +37,14 @@ const groups_data: GroupType[] = [
                 practices: [
                     {
                         id: '4',
+                        cellID: '4',
                         date: '04/09',
                         value: '1.0',
                         valueType: 'number'
                     },
                     {
                         id: '5',
+                        cellID: '5',
                         date: '04/09',
                         value: '3.0',
                         valueType: 'number'
