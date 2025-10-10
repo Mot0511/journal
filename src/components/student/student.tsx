@@ -26,7 +26,7 @@ const Student = (
     const [labDones, setLabDones] = useState<number>(0)
     const [summary, setSummary] = useState<number>(0)
 
-    const [selectedCell, setSelectedCell] = useState<string>()
+    const [selectedCell, setSelectedCell] = useState<string | null>()
 
     useEffect(() => {
         getLecturePresences()
