@@ -19,7 +19,7 @@ const TasksModal = (
     return (
         <div className={cl.modal}>
             <div className={cl.header}>
-                <h1>Изменить кол-во заданий и цвет чекбоксов</h1>
+                <h1>Изменить кол-во заданий</h1>
             </div>
             <div className={cl.body}>
                 <div className={cl.content}>

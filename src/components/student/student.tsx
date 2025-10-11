@@ -3,7 +3,7 @@ import cl from './student.module.sass';
 import type StudentType from '../../types/student';
 import type { ScoresType } from '../../types/scores';
 import Cell from '../cell/cell';
-
+// Один студент
 const Student = (
     {
         student,
@@ -23,14 +23,12 @@ const Student = (
         scores: ScoresType
     }) => {
 
-    const [isSelected, setIsSelected] = useState<boolean>(false)
+    const [isSelected, setIsSelected] = useState<boolean>(false) // выделен ли студент
     
-    const [lecturePresneces, setLecturePresences] = useState<number>(0)
-    const [practicePresneces, setPracticePresences] = useState<number>(0)
-    const [labDones, setLabDones] = useState<number>(0)
-    const [summary, setSummary] = useState<number>(0)
-
-    
+    const [lecturePresneces, setLecturePresences] = useState<number>(0) // кол-во посещений лекций
+    const [practicePresneces, setPracticePresences] = useState<number>(0) // кол-во посещений практик
+    const [labDones, setLabDones] = useState<number>(0) // кол-во выполненных лаб
+    const [summary, setSummary] = useState<number>(0) // сумма
 
     useEffect(() => {
         getLecturePresences()
@@ -39,6 +37,7 @@ const Student = (
         getSummary()
     }, [JSON.stringify(student)])
 
+    // Получение кол-ва посещений лекций
     const getLecturePresences = () => {
         let count = 0
         student.lectures.forEach(lecture => {
@@ -48,6 +47,7 @@ const Student = (
         setLecturePresences(count)
     }
 
+    // Получение кол-ва посещений практик
     const getPracticePresences = () => {
         let count = 0
         student.practices.forEach(practice => {
@@ -57,6 +57,7 @@ const Student = (
         setPracticePresences(count)
     }
 
+    // Получение кол-ва выполненных лаб
     const getLabDones = () => {
         let count = 0
         student.labs.forEach(lab => {
@@ -69,17 +70,14 @@ const Student = (
         setLabDones(count)
     }
 
+    // Получение суммы
     const getSummary = () => {
         let summary = 0
 
         student.lectures.forEach(lecture => {
             for (let score of scores.lectures) {
                 if (score.mark == lecture.value) {
-                    if (score.score > 0) {
-                        summary += score.score
-                    } else {
-                        summary -= score.score
-                    }
+                    summary += score.score
                     break
                 }
             }
@@ -127,6 +125,7 @@ const Student = (
             <div className={cl.student_name}>
                 <p>{student.name}</p>
             </div>
+            {/* Оценки по лекциям */}
             <div className={cl.marks + ' ' + cl.lectures_marks}>
                 {
                     student.lectures.map((lecture) => 
@@ -142,6 +141,7 @@ const Student = (
                     )
                 }
             </div>
+            {/* Оценки по практикам */}
             <div className={cl.marks + ' ' + cl.practic_marks}>
                 {
                     student.practices.map((practice) => 
@@ -157,6 +157,7 @@ const Student = (
                     )
                 }
             </div>
+            {/* Лабы */}
             <div className={cl.marks + ' ' + cl.labs_marks}>
                 <div className={cl.labs}>
                     {
@@ -183,6 +184,7 @@ const Student = (
                     }
                 </div>
             </div>
+            {/* Итоги */}
             <div className={cl.counts}>
                 <p className={cl.table_value}>{lecturePresneces}/{student.lectures.length}</p>
                 <p className={cl.table_value}>{practicePresneces}/{student.practices.length}</p>

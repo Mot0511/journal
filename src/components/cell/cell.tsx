@@ -1,7 +1,8 @@
 import cl from './cell.module.sass'
 import type { ScoreType } from '../../types/scores'
 import checkboxColors from '../../consts/checkbox_colors'
-
+import { MdClear } from "react-icons/md";
+// Одна ячейка
 const Cell = (
     {
         lesson,
@@ -30,9 +31,11 @@ const Cell = (
                 ? <input type="checkbox" className='checkbox' style={{accentColor: checkboxColors[lesson.value]}} checked={true}/>
                 : lesson.value
         }
+        {/* Панель выбора оценки */}
         {
             isSelected &&
                 <div className={cl.marks}>
+                    {/* Пустое значение */}
                     <div 
                         className={cl.mark + ' ' + cl.emptyMark}
                         onClick={() => {
@@ -40,8 +43,9 @@ const Cell = (
                             onSetCellValue('',  'symbol')
                         }}
                     >
-
+                    <MdClear size={'18px'} />
                     </div>
+                    {/* Возможные оценки */}
                     {
                         scores.map(score => <div 
                                 className={cl.mark}

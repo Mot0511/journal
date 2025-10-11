@@ -4,7 +4,7 @@ import Group from '../group/group';
 import type GroupType from '../../types/group';
 import type {ScoresType} from '../../types/scores';
 import type StudentType from '../../types/student';
-
+// Таблица
 const Table = (
     {
         groups, 
@@ -40,6 +40,7 @@ const Table = (
 
     return (
         <div className={cl.table}>
+            {/* Шапка таблицы */}
             <TableHeader 
                 groups={groups} 
                 editDate={editDate}
@@ -54,6 +55,7 @@ const Table = (
                 setIsFiltersCollapsed={setIsFiltersCollapsed}
             />
             {
+                // Одна группа
                 groups.map(group => <Group 
                     group={group} 
                     onStudentSelected={onStudentSelected}

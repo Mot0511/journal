@@ -2,6 +2,7 @@ import type Lab from "./lab"
 import type Lecture from "./lecture"
 import type Practice from "./practice"
 
+// Описание одного студеннта
 export default interface StudentType {
     id: string
     name: string

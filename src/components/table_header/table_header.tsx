@@ -8,7 +8,7 @@ import ScoresModal from '../scores_modal/scores_modal';
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import type StudentType from '../../types/student';
 import type { ScoresType, ScoreType } from '../../types/scores';
-
+// Шапка таблицы
 const TableHeader = (
         {
             groups,
@@ -38,13 +38,14 @@ const TableHeader = (
         }
     ) => {
 
-    const [editingLesson, setEditingLesson] = useState<any>()
-    const [editingLessonValue, setEditingLessonValue] = useState<string>('')
+    const [editingLesson, setEditingLesson] = useState<any>() // изменяющийся урок
+    const [editingLessonValue, setEditingLessonValue] = useState<string>('') // изменяющиеся значение даты
 
-    const [editingLab, setEditingLab] = useState<LabType | null>()
-    const [editingLessonsType, setEditingLessonsType] = useState<string | null>()
-    const [isHideEverybody, setIsHideEverybody] = useState<boolean>(false)
+    const [editingLab, setEditingLab] = useState<LabType | null>() // изменяющаяся лаба
+    const [editingLessonsType, setEditingLessonsType] = useState<string | null>() // тип уроков, у которых изменяется разбалловка
+    const [isHideEverybody, setIsHideEverybody] = useState<boolean>(false) // скрыть ли всех студентов группы
 
+    // Получение массива студентов
     const getStudents = (): StudentType[] => {
         const students: StudentType[] = []
         groups.forEach(group => {
@@ -55,6 +56,7 @@ const TableHeader = (
 
     return (
         <div className={cl.table_header}>
+            {/* Модальное окно "Изменить кол-во заданий" */}
             {
                 editingLab &&
                     <TasksModal
@@ -68,6 +70,7 @@ const TableHeader = (
                         tasksCount={editingLab.tasks.length}
                     />
             }
+            {/* Модальное окно "Настройка оценок" */}
             {
                 editingLessonsType &&
                     <ScoresModal
@@ -103,6 +106,7 @@ const TableHeader = (
                         }
                     </button>
                 </div>
+                {/* Выпадающее меню с фильтрами */}
                 {
                     !isFiltersCollapsed &&
                         <div className={cl.filters}>
@@ -136,6 +140,7 @@ const TableHeader = (
                         </div>
                 }
             </div>
+            {/* Блок с лекциями */}
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
                 <div className={cl.lectures_header}>
                     <h3>Лекции</h3>
@@ -183,6 +188,7 @@ const TableHeader = (
                     }
                 </div>
             </div>
+            {/* Блок с практиками */}
             <div className={cl.table_header_box + ' ' + cl.lessons_header_box}>
                 <div className={cl.practices_header}>
                     <h3>Практика</h3>
@@ -227,6 +233,7 @@ const TableHeader = (
                     }
                 </div>
             </div>
+            {/* Блок с лабами */}
             <div className={cl.table_header_box + ' ' + cl.labs_header_box}>
                 <div className={cl.labs_header}>
                     <h3>Лабораторные работы</h3>
@@ -266,6 +273,7 @@ const TableHeader = (
                     }
                 </div>
             </div>
+            {/* Итоги */}
             <div className={cl.table_header_box + ' ' + cl.summary_header_box}>
                 <p>Посещение<br /> лекций</p>
                 <p>Посещение<br /> практик</p>

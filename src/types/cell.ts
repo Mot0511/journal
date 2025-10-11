@@ -1,3 +1,4 @@
+// Описание ячейки
 export default interface CellType {
     id: string
     studentID?: string

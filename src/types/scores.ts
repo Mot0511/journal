@@ -1,3 +1,4 @@
+// Описание настройки одной оценки
 interface ScoreType {
     id: number
     type: string
@@ -5,6 +6,7 @@ interface ScoreType {
     score: number
 }
 
+// Описание совокупности настроек всех оценок
 interface ScoresType {
     lectures: ScoreType[]
     practices: ScoreType[]

@@ -11,6 +11,7 @@ import getRandomInt from './utils/random';
 
 const Home = () => {
 
+    // Состояния и локальные хранилища данных
     const [teacher, setTeacher] = useState<string>('ФИО преподавателя');
     const [subject, setSubject] = useState<string>('Предмет');
     const [groups, setGroups] = useState<GroupType[]>(groups_data)
@@ -21,6 +22,7 @@ const Home = () => {
     const [hiddenStudents, setHiddenStudents] = useState<string[]>([])
     const [isFiltersCollapsed, setIsFiltersCollapsed] = useState<boolean>(true)
 
+    // Добавление студента
     const onAddStudent = (name: string, groupID: string) => {
         setGroups(groups.map(group => {
             if (group.id == groupID) {
@@ -49,6 +51,7 @@ const Home = () => {
         }))
     }
     
+    // Удаление студента
     const onRemoveStudent = () => {
         setGroups(groups.map(group => {
             group.students = group.students.filter(student => !selectedStudents.includes(student.id))
@@ -56,6 +59,7 @@ const Home = () => {
         }))
     }
 
+    // Выделение студента
     const onStudentSelected = (studentID: string, isSelected: boolean) => {
         if (isSelected) {
             setSelectedStudents([...selectedStudents, studentID])
@@ -64,6 +68,7 @@ const Home = () => {
         }
     }
 
+    // Установление значения для ячейки задания лабы
     const onSetLabTaskValue = (student: StudentType, labID: string, taskID: string, value: string, valueType: string) => {
         for (let group of groups) {
             if (group.id == student.groupID) {
@@ -90,6 +95,7 @@ const Home = () => {
         setGroups(groups)
     }
 
+    // Установление значение для ячейки лекции или практики
     const onSetCellValue = (student: StudentType, lessonID: string, lessonType: string, value: string, valueType: string) => {
         for (let group of groups) {
             if (group.id == student.groupID) {
@@ -121,6 +127,7 @@ const Home = () => {
         setGroups(groups)
     }
 
+    // Добавление колонки
     const onAddColumns = (columns: any, lessonType: string) => {
         let labNumber = groups[0].students[0].labs[groups[0].students[0].labs.length - 1].number
         for (let column of columns) {
@@ -144,6 +151,7 @@ const Home = () => {
         }
     }
 
+    // Изменение даты лекции или практики
     const editDate = (lessonID: string, lessonType: string, date: string) => {
         setGroups(groups.map(group => {
             group.students.forEach(student => {
@@ -169,6 +177,7 @@ const Home = () => {
         }))
     }
 
+    // Удаление колонки
     const onRemoveColumns = () => {
         setGroups(groups.map(group => {
             group.students.forEach(student => {
@@ -180,6 +189,7 @@ const Home = () => {
         }))
     }
 
+    // Изменение кол-ва заданий в лабах
     const editLabTasks = (labID: string, tasksCount: number) => {
         setGroups(groups.map(group => {
             group.students.forEach(student => {
@@ -210,6 +220,7 @@ const Home = () => {
         }))
     }
 
+    // Сортировка по возрастанию (по алфавиту)
     const sortByAscending = () => {
         setGroups(groups.map(group => {
             group.students.sort((s1, s2) => {
@@ -219,6 +230,7 @@ const Home = () => {
         }))
     }
 
+    // Сортировка по убыванию (по алфавиту)
     const sortByDescending = () => {
         setGroups(groups.map(group => {
             console.log(group)
@@ -231,6 +243,7 @@ const Home = () => {
 
     return (
         <>
+            {/* Шапка */}
             <Header 
                 teacher={teacher} 
                 onTeacherEdit={(value: string) => setTeacher(value)}
@@ -247,6 +260,7 @@ const Home = () => {
                 sortByDescending={sortByDescending}
             />
             <main>
+                {/* Таблица */}
                 <Table 
                     groups={groups} 
                     onStudentSelected={onStudentSelected}

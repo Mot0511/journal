@@ -4,7 +4,7 @@ import Student from '../student/student';
 import type GroupType from '../../types/group';
 import type {ScoresType} from '../../types/scores';
 import type StudentType from '../../types/student';
-
+// Группа студентов
 const Group = (
     {
         group,
@@ -22,8 +22,9 @@ const Group = (
         scores: ScoresType
     }) => {
 
-    const [isStudentsVisible, setIsStudentsVisible] = useState<boolean>(true);
-    const [selectedCell, setSelectedCell] = useState<string | null>(null)
+    
+    const [isStudentsVisible, setIsStudentsVisible] = useState<boolean>(true); // показан ли студент
+    const [selectedCell, setSelectedCell] = useState<string | null>(null) // выделенная ячейка
 
     return (
         <div className={cl.group}>
@@ -35,6 +36,7 @@ const Group = (
                 isStudentsVisible &&
                     group.students.map((student) => {
                         if (!hiddenStudents.includes(student.id)) {
+                            // Один студент
                             return <Student 
                                 student={student} 
                                 onSelected={onStudentSelected} 

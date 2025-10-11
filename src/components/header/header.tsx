@@ -10,7 +10,7 @@ import StudentIcon from '../../img/student.png'
 import StudentModal from '../student_modal/student_modal';
 import type GroupType from '../../types/group';
 import ColumnsModal from '../columns_modal/columns_modal';
-
+// Шапка всего сайта
 const Header = (
     {   
         teacher, 
@@ -42,15 +42,17 @@ const Header = (
         sortByDescending: () => void
     }) => {
 
-    const [isInfoEditing, setInfoEditing] = useState<boolean>();
-    const [isContextStudentsVisible, setIsContextStudentsVisible] = useState<boolean>();
-    const [isContextColumnsVisible, setIsContextColumnsVisible] = useState<boolean>();
-    const [isStudentModalVisible, setIsStudentModalVisible] = useState<boolean>(false)
-    const [isColumnsModalVisible, setIsColumnsModalVisible] = useState<boolean>(false)
-    const [isContextSortVisible, setIsContextSortVisible] = useState<boolean>(false)
+    // Состояния на отображение...
+    const [isInfoEditing, setInfoEditing] = useState<boolean>(); // ...полей ввода ФИО преподавателя и предмета
+    const [isContextStudentsVisible, setIsContextStudentsVisible] = useState<boolean>(); // ... контекстного меню кнопки "Студенты"
+    const [isContextColumnsVisible, setIsContextColumnsVisible] = useState<boolean>(); // ... контекстного меню кнопки "Столбцы"
+    const [isStudentModalVisible, setIsStudentModalVisible] = useState<boolean>(false) // ... модального окна "Добавить студента"
+    const [isColumnsModalVisible, setIsColumnsModalVisible] = useState<boolean>(false) // ... модального окна "Добавить колонку"
+    const [isContextSortVisible, setIsContextSortVisible] = useState<boolean>(false) // ... контекстного меню кнопки "Сортировка"
 
     return (
         <div className={cl.header}>
+            {/* Модальное окно "Добавить студента" */}
             {
                 isStudentModalVisible &&
                     <StudentModal 
@@ -62,6 +64,7 @@ const Header = (
                         onCancel={() => setIsStudentModalVisible(false)}
                     />
             }
+            {/* Модальное окно "Добавить колонку" */}
             {
                 isColumnsModalVisible &&
                     <ColumnsModal
@@ -72,6 +75,7 @@ const Header = (
                         onCancel={() => setIsColumnsModalVisible(false)}
                     />
             }
+            {/* Поля ввода ФИО преподавателя и предмета */}
             <div className={cl.info}>
                 {
                     isInfoEditing
@@ -93,6 +97,7 @@ const Header = (
             </div>
             <input type="search" className={cl.search} placeholder='Поиск' />
             <div className={cl.menu}>
+                {/* Кнопка "Сортировка" */}
                 <button onClick={() => {
                     setIsContextSortVisible(!isContextSortVisible)
                     setIsContextColumnsVisible(false)
@@ -112,10 +117,12 @@ const Header = (
                         </div>
                     }
                 </button>
+                {/* Кнопка "Фильтр" */}
                 <button onClick={() => setIsFiltersCollapsed(!isFiltersCollapsed)}>
                     <img src={FilterIcon} alt="" /><br />
                     Фильтр
                 </button>
+                {/* Кнопка "Столбцы" */}
                 <button onClick={() => {
                     setIsContextColumnsVisible(!isContextColumnsVisible)
                     setIsContextSortVisible(false)
@@ -135,6 +142,7 @@ const Header = (
                         </div>
                     }
                 </button>
+                {/* Кнопка "Студенты" */}
                 <button onClick={() => {
                     setIsContextStudentsVisible(!isContextStudentsVisible)
                     setIsContextSortVisible(false)
