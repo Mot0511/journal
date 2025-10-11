@@ -167,13 +167,15 @@ const TableHeader = (
                                             type="text"
                                             value={editingLessonValue}
                                             onChange={e => setEditingLessonValue(e.target.value)}
+                                            onClick={e => e.stopPropagation()}
                                             onBlur={() => {
                                                 editDate(lecture.id, 'lecture', editingLessonValue)
                                                 setEditingLesson(null)
                                                 setEditingLessonValue('')
                                             }}
                                         />
-                                        : <p onClick={() => {
+                                        : <p onClick={e => {
+                                            e.stopPropagation()
                                             setEditingLessonValue(lecture.date)
                                             setEditingLesson({
                                                 lessonType: 'lecture',
@@ -214,13 +216,15 @@ const TableHeader = (
                                         type="text"
                                         value={editingLessonValue}
                                         onChange={e => setEditingLessonValue(e.target.value)}
+                                        onClick={e => e.stopPropagation()}
                                         onBlur={() => {
                                             editDate(practice.id, 'practice', editingLessonValue)
                                             setEditingLesson(null)
                                             setEditingLessonValue('')
                                         }}
                                     />
-                                    : <p onClick={() => {
+                                    : <p onClick={e => {
+                                        e.stopPropagation()
                                         setEditingLessonValue(practice.date)
                                             setEditingLesson({
                                             lessonType: 'practice',
@@ -257,7 +261,10 @@ const TableHeader = (
                                 <div className={cl.lab_header}>
                                     <span className={cl.lab_title}>Лабораторная работа</span>
                                     <span className={cl.lab_number}>{lab.number}</span>
-                                    <button onClick={() => setEditingLab(lab)}><IoSettingsOutline /></button>
+                                    <button onClick={e => {
+                                        e.stopPropagation()
+                                        setEditingLab(lab)
+                                    }}><IoSettingsOutline /></button>
                                 </div>
                                 
                                 <div className={cl.lab_tasks}>

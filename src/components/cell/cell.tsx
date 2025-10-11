@@ -20,7 +20,8 @@ const Cell = (
 ) => {
 
     return (
-        <div className={cl.cell} style={{color: lesson.value == 'Н' ? 'red' : 'black', background: isSelected ? '#EFF3F9' : 'none'}} onClick={() => {
+        <div className={cl.cell} style={{color: lesson.value == 'Н' ? 'red' : 'black', background: isSelected ? '#EFF3F9' : 'none'}} onClick={e => {
+                e.stopPropagation()
                 setSelectedCell(
                     lesson.cellID ? lesson.cellID : lesson.id
                 )
