@@ -133,7 +133,9 @@ const Student = (
                             lesson={lecture}
                             scores={scores.lectures}
                             isSelected={selectedCell == lecture.cellID}
-                            setSelectedCell={setSelectedCell}
+                            setSelectedCell={(value: string | null) => {
+                                setSelectedCell(value)
+                            }}
                             onSetCellValue={(value: string, valueType: string) => {
                                 onSetCellValue(student, lecture.id, 'lecture', value, valueType)
                             }}

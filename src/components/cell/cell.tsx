@@ -38,7 +38,8 @@ const Cell = (
                     {/* Пустое значение */}
                     <div 
                         className={cl.mark + ' ' + cl.emptyMark}
-                        onClick={() => {
+                        onClick={e => {
+                            e.stopPropagation()
                             setSelectedCell(null)
                             onSetCellValue('',  'symbol')
                         }}
@@ -49,7 +50,8 @@ const Cell = (
                     {
                         scores.map(score => <div 
                                 className={cl.mark}
-                                onClick={() => {
+                                onClick={e => {
+                                    e.stopPropagation()
                                     setSelectedCell(null)
                                     onSetCellValue(score.mark, score.type)
                                 }}
