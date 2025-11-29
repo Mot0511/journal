@@ -26,6 +26,7 @@ const Header = (
         setIsFiltersCollapsed,
         sortByAscending,
         sortByDescending,
+        search
     }: {
         teacher: string, 
         onTeacherEdit: (teacher: string) => void,
@@ -39,7 +40,8 @@ const Header = (
         isFiltersCollapsed: boolean,
         setIsFiltersCollapsed: (state: boolean) => void,
         sortByAscending: () => void
-        sortByDescending: () => void
+        sortByDescending: () => void,
+        search: (student_name: string) => void
     }) => {
 
     // Состояния на отображение...
@@ -49,6 +51,9 @@ const Header = (
     const [isStudentModalVisible, setIsStudentModalVisible] = useState<boolean>(false) // ... модального окна "Добавить студента"
     const [isColumnsModalVisible, setIsColumnsModalVisible] = useState<boolean>(false) // ... модального окна "Добавить колонку"
     const [isContextSortVisible, setIsContextSortVisible] = useState<boolean>(false) // ... контекстного меню кнопки "Сортировка"
+
+    const [searchText, setSearchText] = useState<string>('')
+
 
     return (
         <div className={cl.header}>
@@ -95,7 +100,10 @@ const Header = (
                     }
                 </button> */}
             </div>
-            <input type="search" className={cl.search} placeholder='Поиск' />
+            <input type="search" className={cl.search} placeholder='Поиск' value={searchText} onChange={e => {
+                setSearchText(e.target.value)
+                search(e.target.value)
+            }} />
             <div className={cl.menu}>
                 {/* Кнопка "Сортировка" */}
                 <button onClick={() => {

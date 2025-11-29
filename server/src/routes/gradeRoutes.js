@@ -15,6 +15,8 @@ router.post('/activities', authenticateToken, requireTeacher, validateRequest(ac
 router.put('/activities/:id', authenticateToken, requireTeacher, GradeController.updateActivity);
 router.delete('/activities/:id', authenticateToken, requireTeacher, GradeController.deleteActivity);
 
+router.delete('/labs/:id', authenticateToken, requireTeacher, GradeController.deleteLab);
+
 // Роуты для занятий
 router.get('/lessons', authenticateToken, requireAuth, GradeController.getAllLessons);
 router.get('/lessons/journal', authenticateToken, requireTeacher, GradeController.getJournalLessons);

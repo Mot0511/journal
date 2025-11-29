@@ -87,13 +87,13 @@ class Activity {
 
   // Создать новую активность
   static async create(activityData) {
-    const { studentId, subjectId, teacherId, taskId, taskTypeId, meta, date, mark } = activityData;
+    const { studentId, subjectId, teacherId, taskId, taskTypeId, meta, date, mark, taskNumber, number } = activityData;
     try {
       const result = await pool.query(`
-        INSERT INTO "Activity" ("StudentId", "SubjectId", "TeacherId", "TaskId", "TaskTypeId", "Meta", "Date", "Mark")
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        INSERT INTO "Activity" ("StudentId", "SubjectId", "TeacherId", "TaskId", "TaskTypeId", "Meta", "Date", "Mark", "TaskNumber", "Number")
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
         RETURNING *
-      `, [studentId, subjectId, teacherId, taskId, taskTypeId, meta, date, mark]);
+      `, [studentId, subjectId, teacherId, taskId, taskTypeId, meta, date, mark, taskNumber, number]);
       return result.rows[0];
     } catch (error) {
       throw new Error(`Error creating activity: ${error.message}`);
@@ -127,6 +127,19 @@ class Activity {
       return result.rows[0];
     } catch (error) {
       throw new Error(`Error deleting activity: ${error.message}`);
+    }
+  }
+
+  static async deleteLab(id) {
+    try {
+      const result = await pool.query(`
+        DELETE FROM "Activity" 
+        WHERE "TaskId" = $1
+        RETURNING *
+      `, [id]);
+      return result.rows[0];
+    } catch (error) {
+      throw new Error(`Error deleting lab: ${error.message}`);
     }
   }
 

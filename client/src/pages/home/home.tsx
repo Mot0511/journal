@@ -19,6 +19,9 @@ import Subjects from '../../components/subjects/subjects';
 import type SubjectType from '../../types/subject';
 import SubjectService from '../../services/SubjectService';
 import { LiaMercurySolid } from 'react-icons/lia';
+import type LectureType from '../../types/lecture';
+import type PracticeType from '../../types/practice';
+import type LabType from '../../types/lab';
 
 const Home = () => {
     
@@ -73,52 +76,59 @@ const Home = () => {
     // Добавление студента
     const onAddStudent = async (userdata: any) => {
         const user = await StudentService.create(userdata)
-        setGroups(groups.map(group => {
+        for (let group of groups) {
             if (group.id == userdata.groupID) {
-                group.students.push({
+                const data: StudentType = {
                     id: user.id,
                     name: `${userdata.lastName} ${userdata.name} ${userdata.middleName}`,
                     groupID: userdata.groupID,
-                    lectures: groups[0].students[0].lectures.map(lecture => {
-                        return {id: lecture.id, cellID: getRandomInt(0, 10000), date: lecture.date, value: '', valueType: 'symbol'}
-                    }),
-                    practices: groups[0].students[0].practices.map(practice => {    
-                        return {id: practice.id, cellID: getRandomInt(0, 10000), date: practice.date, value: '', valueType: 'symbol'}
-                    }),
-                    labs: groups[0].students[0].labs.map(lab => {
-                        return {id: lab.id, number: lab.number, date: lab.date, tasks: lab.tasks.map(_ => {
-                            return {id: getRandomInt(0, 10000), value: '', valueType: 'symbol'}
-                        })}
-                    }),
+                    lectures: [],
+                    practices: [],
+                    labs: [],
                     lecture_presences: 0,
                     practice_presences: 0,
                     lab_dones: 0,
                     summary: 0
-                })
-            }
-            return group
-        }))
+                }
+                const lectures: LectureType[] = []
+                const practices: PracticeType[] = []
+                const labs: LabType[] = []
+                for (let lecture of groups[0].students[0].lectures) {
+                    const data = await LessonService.create(user.id, 1, 1, ' ', getDBDate(lecture.date))
+                    lectures.push({id: data.id, cellID: data.id, date: lecture.date, value: '', valueType: 'symbol'})
+                }
 
-        for (let lecture of groups[0].students[0].lectures) {
-            await LessonService.create(user.id, 1, 1, ' ', getDBDate(lecture.date))
-        }
-        for (let practice of groups[0].students[0].practices) {
-            await LessonService.create(user.id, 1, 2, ' ', getDBDate(practice.date))
-        }
-        for (let lab of groups[0].students[0].labs) {
-            for (let task of lab.tasks) {
-                await LabService.createActivity({
-                    studentId: user.id,
-                    subjectId: selectedSubject?.id,
-                    teacherId: Number(localStorage.getItem('id')),
-                    taskId: lab.id,
-                    taskTypeId: 1,
-                    meta: lab.number,
-                    date: getDBDate(lab.date),
-                    mark: ' '
-                })
+                for (let practice of groups[0].students[0].practices) {
+                    const data = await LessonService.create(user.id, 1, 2, ' ', getDBDate(practice.date))
+                    practices.push({id: data.id, cellID: data.id, date: practice.date, value: '', valueType: 'symbol'})
+                }
+
+                for (let lab of groups[0].students[0].labs) {
+                    const tasks = []
+                    for (let i = 0; i < lab.tasks.length; i++) {
+                        const data = await LabService.createActivity({
+                            studentId: user.id,
+                            subjectId: selectedSubject?.id,
+                            teacherId: Number(localStorage.getItem('id')),
+                            taskId: lab.id,
+                            taskTypeId: 1,
+                            meta: ' ',
+                            date: getDBDate(lab.date),
+                            mark: ' ',
+                            number: i,
+                            taskNumber: lab.number
+                        })
+                        tasks.push({id: data.id, value: '', valueType: 'symbol'})
+                    }
+                    labs.push({id: lab.id, number: lab.number, date: lab.date, tasks: tasks})
+                }
+                data.lectures = lectures
+                data.practices = practices
+                data.labs = labs
+                group.students.push(data)
             }
         }
+        setGroups(JSON.parse(JSON.stringify(groups)))
     }
     
     // Удаление студента
@@ -130,9 +140,7 @@ const Home = () => {
                         await LessonService.deleteById(lesson.id)
                     }
                     for (let lab of student.labs) {
-                        for (let activity of lab.tasks) {
-                            await LabService.deleteActivity(activity.id)
-                        }
+                        await LabService.deleteLab(lab.id)
                     }
                     await StudentService.delete(student.id)
                 }
@@ -217,8 +225,11 @@ const Home = () => {
 
     // Добавление колонки
     const onAddColumns = async (columns: any, lessonType: string) => {
-        let labNumber = groups[0].students[0].labs[groups[0].students[0].labs.length - 1].number
         for (let column of columns) {
+            column.number = 1
+            if (groups[0].students[0].labs.length)  {
+                column.number = groups[0].students[0].labs[groups[0].students[0].labs.length - 1].number + 1
+            }
             for (let group of groups) {
                 for (let student of group.students) {
                     const id = getRandomInt(1, 10000)
@@ -226,29 +237,33 @@ const Home = () => {
                     if (!selectedSubject) return
                     switch (lessonType) {
                         case 'lecture':
+                            const lecture = await LessonService.create(student.id, selectedSubject!.id, 1, ' ', getDBDate(column.date))
+                            column.id = lecture.id
                             student.lectures.push(column)
-                            await LessonService.create(student.id, selectedSubject!.id, 1, ' ', getDBDate(column.date))
                             break
                         case 'practice':
+                            const practice = await LessonService.create(student.id, selectedSubject!.id, 2, ' ', getDBDate(column.date))
+                            column.id = practice.id
                             student.practices.push(column)
-                            await LessonService.create(student.id, selectedSubject!.id, 2, ' ', getDBDate(column.date))
                             break
                         case 'lab':
-                            labNumber++
-                            column.number = labNumber
-                            student.labs.push(column)
-                            for (let activity of column.tasks) {
-                                await LabService.createActivity({
+                            const lab = JSON.parse(JSON.stringify(column))
+                            for (let i = 0; i < column.tasks.length; i++) {
+                                const activity = await LabService.createActivity({
                                     studentId: student.id,
                                     subjectId: selectedSubject.id,
                                     teacherId: Number(localStorage.getItem('id')),
                                     taskId: column.id,
                                     taskTypeId: 1,
-                                    meta: String(column.number),
+                                    meta: " ",
                                     date: getDBDate(column.date),
-                                    mark: " "
+                                    mark: " ",
+                                    taskNumber: column.number,
+                                    number: i
                                 })
+                                lab.tasks[i].id = activity.id
                             }
+                            student.labs.push(lab)
                     }
                 }
             }
@@ -298,6 +313,11 @@ const Home = () => {
                         await LessonService.delete(selectedSubject!.id, 2, getDBDate(practice.date))
                     }
                 }
+                for (let lab of student.labs) {
+                    if (selectedColumns.includes(lab)) {
+                        await LabService.deleteLab(lab.id)
+                    }
+                }
                 for (let column of selectedColumns) {
                     student.lectures = student.lectures.filter(lecture => lecture.date != column.date)
                     student.practices = student.practices.filter(practice => practice.date != column.date)
@@ -316,7 +336,7 @@ const Home = () => {
                     if (lab.id == labID) {
                         if (tasksCount > lab.tasks.length) {
                             const newTasks = []
-                            for (let i = 0; i < tasksCount - lab.tasks.length; i++) {
+                            for (let i = lab.tasks.length + 1; i <= tasksCount; i++) {
                                 newTasks.push({
                                     id: Date.now() + getRandomInt(0, 10000),
                                     value: '',
@@ -328,9 +348,11 @@ const Home = () => {
                                     teacherId: Number(localStorage.getItem('id')),
                                     taskId: lab.id,
                                     taskTypeId: 1,
-                                    meta: String(lab.number),
+                                    meta: ' ',
                                     date: getDBDate(lab.date),
-                                    mark: ' '
+                                    mark: ' ',
+                                    number: i,
+                                    taskNumber: lab.number
                                 })
                             }
                             Array.prototype.push.apply(lab.tasks, newTasks)
@@ -373,6 +395,17 @@ const Home = () => {
         }))
     }
 
+    const search = (student_name: string) =>{
+        if (!student_name) {
+            loadData()
+            return
+        }
+        setGroups(groups.map(group => {
+            group.students = group.students.filter(student => student.name.includes(student_name))
+            return group
+        }))
+    }
+
     if (!isLoading)
         return (
             <>
@@ -392,11 +425,12 @@ const Home = () => {
                     setIsFiltersCollapsed={setIsFiltersCollapsed}
                     sortByAscending={sortByAscending}
                     sortByDescending={sortByDescending}
+                    search={search}
                 />
                 <main>
                     {/* Таблица */}
                     <Table 
-                        groups={groups} 
+                        groups={groups}
                         onStudentSelected={onStudentSelected}
                         onSetCellValue={onSetCellValue}
                         onSetLabTaskValue={onSetLabTaskValue}

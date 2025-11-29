@@ -160,6 +160,32 @@ class GradeController {
     }
   }
 
+  static async deleteLab(req, res) {
+    try {
+      const { id } = req.params;
+      const activity = await Activity.deleteLab(id);
+      
+      if (!activity) {
+        return res.status(404).json({
+          success: false,
+          message: 'Лаба не найдена'
+        });
+      }
+
+      res.json({
+        success: true,
+        message: 'Лаба успешно удалена',
+        data: activity
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'Ошибка при удалении лабы',
+        error: error.message
+      });
+    }
+  }
+
   // Получить все занятия (с пагинацией)
   static async getAllLessons(req, res) {
     try {

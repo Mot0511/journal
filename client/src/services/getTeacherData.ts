@@ -70,18 +70,21 @@ export default async (subjectID: number) => {
                         // @ts-ignore
                         date: getShortDate(date.toISOString()),
                         // @ts-ignore
-                        tasks: labs[lab].map((activity: any) => {
-                            return {
-                                id: activity.id,
-                                value: activity.Mark,
-                                valueType: 'checkbox',
-                            }
-                        }),
+                        tasks: labs[lab]
+                            .sort((activity1: any, activity2: any) => activity1.Number - activity2.Number)
+                            .map((activity: any) => {
+                                return {
+                                    id: activity.id,
+                                    value: activity.Mark,
+                                    valueType: 'checkbox',
+                                }
+                            }),
                         // @ts-ignore
-                        number: labs[lab][0].Meta,
+                        number: labs[lab][0].TaskNumber,
                     }
                 )
             }
+            student.labs.sort((lab1: any, lab2: any) => lab1.number - lab2.number)
         }
     }
     return groups

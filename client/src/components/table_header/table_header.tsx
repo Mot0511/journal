@@ -157,6 +157,7 @@ const TableHeader = (
                 </div>
                 <div className={cl.days}>
                     {
+                        groups[0].students.length ?
                         groups[0].students[0].lectures.map(lecture => {
                             return <div 
                                 className={cl.day} 
@@ -194,7 +195,7 @@ const TableHeader = (
                             </div>
                         }
                             
-                        )
+                        ) : <></>
                     }
                 </div>
             </div>
@@ -208,6 +209,7 @@ const TableHeader = (
                 </div>
                 <div className={cl.days}>
                     {
+                        groups[0].students.length ?
                         groups[0].students[0].practices.map(practice => 
                             <div 
                                 className={cl.day}
@@ -243,7 +245,7 @@ const TableHeader = (
                                     }}>{practice.date}</p>
                                 }
                             </div>
-                        )
+                        ) : <></>
                     }
                 </div>
             </div>
@@ -257,6 +259,7 @@ const TableHeader = (
                 </div>
                 <div className={cl.labs}>
                     {
+                        groups[0].students.length ?
                         groups[0].students[0].labs.map(lab => {
                             let num = 0
                             return <div 
@@ -291,7 +294,7 @@ const TableHeader = (
                                     }   
                                 </div>
                             </div>
-                        })
+                        }) : <></>
                     }
                 </div>
             </div>

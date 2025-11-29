@@ -16,7 +16,8 @@ class LabService {
     }
 
     static async createActivity(data: any) {
-        await post('/grades/activities', data)
+        const res = await post('/grades/activities', data)
+        return res
     }
 
     static async updateActivity(
@@ -34,10 +35,12 @@ class LabService {
         })
     }
 
-    static async deleteActivity(
-        id: number
-    ) {
+    static async deleteActivity(id: number) {
         await deleteR(`/grades/activities/${id}`)
+    }
+
+    static async deleteLab(id: number) {
+        await deleteR(`/grades/labs/${id}`)
     }
 }
 

@@ -20,13 +20,14 @@ class LessonService {
     }
 
     static async create(studentId: number, subjectId: number, typeSubject: number, mark: string, date: string) {
-        await post('/grades/lessons', {
+        const res = await post('/grades/lessons', {
             studentId,
             subjectId,
             typeSubject,
             mark,
             date
         })
+        return res
     }
 
     static async createBulk(groupId: number, subjectId: number, typeSubjectId: number, date: string) {

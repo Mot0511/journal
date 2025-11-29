@@ -1,6 +1,6 @@
 // Описание задания в лабе
 interface LabTask {
-    id: number,
+    id: number
     value: string
     valueType: string
 }

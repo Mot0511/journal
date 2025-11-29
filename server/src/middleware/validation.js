@@ -73,7 +73,9 @@ export const activitySchema = Joi.object({
   taskTypeId: Joi.number().integer().allow(null),
   meta: Joi.string().allow('', null),
   date: Joi.date().required(),
-  mark: Joi.string().required()
+  mark: Joi.string().required(),
+  taskNumber: Joi.number().required(),
+  number: Joi.number().required()
 });
 
 // Схема для создания занятия
