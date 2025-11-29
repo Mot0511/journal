@@ -32,7 +32,7 @@ services:
       POSTGRES_DB: journal
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
-      - "5432:5432"
+      - 5432:5432
     volumes:
       - ./pgdata:/var/lib/postgresql/data/pgdata
     restart: unless-stopped
@@ -48,6 +48,7 @@ services:
     restart: unless-stopped
     depends_on:
       - postgres
+    network_mode: host
 
 
 volumes:
