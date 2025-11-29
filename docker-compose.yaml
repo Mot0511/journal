@@ -22,8 +22,6 @@ services:
     depends_on:
       - server
     restart: unless-stopped
-    depends_on:
-      - server
     
   postgres:
     image: postgres:latest
